@@ -8,7 +8,9 @@
 #include "components/input/Input.h"
 #include "VectorInt.h"
 
+#include "gamedata/explosion/explosion.h"
 #include <memory>
+#include "components/debugcamera/DebugCamera.h"
 
 class Player {
 public:
@@ -23,4 +25,10 @@ private:
 	WorldTransform worldTransform_;
 
 	DirectionalLight directionalLight_;
+
+	DebugCamera* debugCamera_;
+
+	Explosion* explosion_;
+	float explosionTimer_;
+	bool isExplosion_;
 };

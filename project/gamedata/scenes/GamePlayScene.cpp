@@ -75,15 +75,12 @@ void GamePlayScene::Initialize() {
 	// デバッグカメラの初期化
 	debugCamera_ = DebugCamera::GetInstance();
 	debugCamera_->initialize();
+	debugCamera_->SetCamera({ 14.0f,43.0f,-20.0f }, { -5.0f,0.0f,0.0f });
 
 	viewProjection_.Initialize();
 
 	//CollisionManager
 	collisionManager_ = CollisionManager::GetInstance();
-
-	//Explosion
-	explosion_ = new Explosion();
-	explosion_->Initialize();
 
 	//Player
 	player_ = new Player();
@@ -219,7 +216,6 @@ void GamePlayScene::Update() {
 
 	ImGui::End();
 
-	explosion_->Update(worldTransformModel_);
 	MapManager::GetInstance()->Update();
 	player_->Update();
 }
@@ -243,7 +239,6 @@ void GamePlayScene::Draw() {
 		model_->Draw(worldTransformModel_,viewProjection_,modelMaterial_, directionalLight_);
 	}
 
-	explosion_->Draw(viewProjection_);
 	MapManager::GetInstance()->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 #pragma endregion
