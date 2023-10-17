@@ -13,6 +13,8 @@
 #include "components/utilities/collisionManager/CollisionManager.h"
 #include "components/utilities/collisionManager/CollisionConfig.h"
 
+#include "gamedata/explosion/explosion.h"
+
 class GamePlayScene :public Iscene {
 public:
 	void Initialize();
@@ -68,4 +70,6 @@ private:
 	int isSphereDraw_;
 	int isSpriteDraw_;
 	int isModelDraw_;
+
+	Explosion* explosion_;
 };

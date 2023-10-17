@@ -12,7 +12,6 @@ void GameTitleScene::Update(){
 	if (input_->PressKey(DIK_N)) {
 		sceneNo = 1;
 	}
-	input_->Update();
 
 	ImGui::Begin("debug");
 	ImGui::Text("GameTitleScene");

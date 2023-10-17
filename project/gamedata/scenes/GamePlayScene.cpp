@@ -49,7 +49,7 @@ void GamePlayScene::Initialize() {
 
 	//objモデル
 	model_ = new Model();
-	model_->Initialize("project/gamedata/resources/fence", "fence.obj");
+	model_->Initialize("project/gamedata/resources/block", "block.obj");
 	worldTransformModel_.Initialize();
 	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
 
@@ -80,6 +80,10 @@ void GamePlayScene::Initialize() {
 	//CollisionManager
 	collisionManager_ = CollisionManager::GetInstance();
 
+	//Explosion
+	explosion_ = new Explosion();
+	explosion_->Initialize();
+
 	GlobalVariables* globalVariables{};
 	globalVariables = GlobalVariables::GetInstance();
 
@@ -95,7 +99,6 @@ void GamePlayScene::Update() {
 	collisionManager_->ClearColliders();
 	collisionManager_->CheckAllCollision();
 
-	input_->Update();
 	debugCamera_->Update();
 
 	viewProjection_.translation_ = debugCamera_->GetViewProjection()->translation_;
@@ -207,6 +210,8 @@ void GamePlayScene::Update() {
 	ImGui::Text("%f", ImGui::GetIO().Framerate);
 
 	ImGui::End();
+
+	explosion_->Update(worldTransformModel_);
 }
 
 void GamePlayScene::Draw() {
@@ -225,10 +230,10 @@ void GamePlayScene::Draw() {
 	}
 
 	if (isModelDraw_) {
-		for (int i = 0; i < 400; i++) {
-			model_->Draw(worldTransformModel_,viewProjection_,modelMaterial_, directionalLight_);
-		}
+		model_->Draw(worldTransformModel_,viewProjection_,modelMaterial_, directionalLight_);
 	}
+
+	explosion_->Draw(viewProjection_);
 #pragma endregion
 
 #pragma region 前景スプライト描画
