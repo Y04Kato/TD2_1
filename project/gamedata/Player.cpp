@@ -44,4 +44,4 @@ void Player::Update() {
 }
 
 
-void Player::Draw(const ViewProjection& viewProjection) { model_->Draw(worldTransform_,viewProjection,Vector4{ 0.0f,0.5f,0.0f,1.0f }, directionalLight_); }
+void Player::Draw(const ViewProjection& viewProjection) { model_->Draw(worldTransform_,viewProjection,Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_); }

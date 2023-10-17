@@ -216,14 +216,11 @@
     <ClCompile Include="project\gamedata\explosion\explosion.cpp">
       <Filter>ソース ファイル\project\gamedata\explosion</Filter>
     </ClCompile>
-    <ClCompile Include="project\gamedata\Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="project\gamedata\MapManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\project\gamedata</Filter>
     </ClCompile>
     <ClCompile Include="project\gamedata\Player.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\project\gamedata</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,17 +343,14 @@
     <ClInclude Include="project\gamedata\explosion\explosion.h">
       <Filter>ヘッダー ファイル\project\gamedata\explosion</Filter>
     </ClInclude>
-    <ClInclude Include="project\gamedata\Camera.h">
+    <ClInclude Include="project\gamedata\VectorInt.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="project\gamedata\MapManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\project\gamedata</Filter>
     </ClInclude>
     <ClInclude Include="project\gamedata\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="project\gamedata\VectorInt.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\project\gamedata</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

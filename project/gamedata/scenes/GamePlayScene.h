@@ -14,6 +14,7 @@
 #include "components/utilities/collisionManager/CollisionConfig.h"
 
 #include "gamedata/explosion/explosion.h"
+#include "gamedata/Player.h"
 
 class GamePlayScene :public Iscene {
 public:
@@ -72,4 +73,7 @@ private:
 	int isModelDraw_;
 
 	Explosion* explosion_;
+
+	Player* player_;
+
 };

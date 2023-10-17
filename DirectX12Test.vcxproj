@@ -114,7 +114,6 @@
     <ClCompile Include="base\components\math\MatrixCalculation.cpp" />
     <ClCompile Include="base\CJEngine.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="project\gamedata\Camera.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion.cpp" />
     <ClCompile Include="project\gamedata\MapManager.cpp" />
     <ClCompile Include="project\gamedata\Player.cpp" />
@@ -181,7 +180,6 @@
       <DeploymentContent>false</DeploymentContent>
     </ClInclude>
     <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="project\gamedata\Camera.h" />
     <ClInclude Include="project\gamedata\explosion\explosion.h" />
     <ClInclude Include="project\gamedata\MapManager.h" />
     <ClInclude Include="project\gamedata\Player.h" />

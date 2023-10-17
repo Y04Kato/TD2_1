@@ -1,17 +1,14 @@
 #pragma once
-//#include "ViewProjection.h"
 #include "components/3d/ViewProjection.h"
 #include "components/3d/WorldTransform.h"
 #include <stdint.h>
 #include <array>
 #include <list>
 #include "VectorInt.h"
-//#include Vector3.h
 #include <memory>
-//#include "Model.h"
-//#include "TextureManager.h"
 #include "components/manager/TextureManager.h"
 #include "components/3d/Model.h"
+
 class MapManager {
 public: 
 	enum class MapState {
@@ -46,7 +43,7 @@ public:
 	void MapRead();
 	void FindChain();
 	void Protect(int x, int y);
-	//static VectorInt GetMapNum(const Vector3& worldPosition);
+
 	static Vector3 GetworldPosition(VectorInt2 vector);
 	static Vector3 GetCenterworldPosition();
 
@@ -72,7 +69,6 @@ private:
 
 
 	Map map[kMapHeight][kMapWidth];
-	//std::list<WorldTransform> worldTransforms_;
 	
 	std::list<Bomb> bombs_;
 

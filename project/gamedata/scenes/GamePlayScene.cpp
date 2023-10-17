@@ -1,6 +1,7 @@
 #include "GamePlayScene.h"
 #include "components/utilities/globalVariables/GlobalVariables.h"
 #include "../MapManager.h"
+
 void GamePlayScene::Initialize() {
 	CJEngine_ = CitrusJunosEngine::GetInstance();
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -83,6 +84,10 @@ void GamePlayScene::Initialize() {
 	//Explosion
 	explosion_ = new Explosion();
 	explosion_->Initialize();
+
+	//Player
+	player_ = new Player();
+	player_->Initialize();
 
 	GlobalVariables* globalVariables{};
 	globalVariables = GlobalVariables::GetInstance();
@@ -206,6 +211,7 @@ void GamePlayScene::Update() {
 		ImGui::DragFloat3("Translate", worldTransformModel_.translation_.num, 0.05f);
 		ImGui::DragFloat3("Rotate", worldTransformModel_.rotation_.num, 0.05f);
 		ImGui::DragFloat3("Scale", worldTransformModel_.scale_.num, 0.05f);
+		ImGui::ColorEdit4("", modelMaterial_.num, 0);
 		ImGui::TreePop();
 	}
 
@@ -215,6 +221,7 @@ void GamePlayScene::Update() {
 
 	explosion_->Update(worldTransformModel_);
 	MapManager::GetInstance()->Update();
+	player_->Update();
 }
 
 void GamePlayScene::Draw() {
@@ -238,6 +245,7 @@ void GamePlayScene::Draw() {
 
 	explosion_->Draw(viewProjection_);
 	MapManager::GetInstance()->Draw(viewProjection_);
+	player_->Draw(viewProjection_);
 #pragma endregion
 
 #pragma region 前景スプライト描画
