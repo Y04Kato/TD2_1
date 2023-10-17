@@ -216,6 +216,15 @@
     <ClCompile Include="project\gamedata\explosion\explosion.cpp">
       <Filter>ソース ファイル\project\gamedata\explosion</Filter>
     </ClCompile>
+    <ClCompile Include="project\gamedata\Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="project\gamedata\MapManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="project\gamedata\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="project\gamedata\resources\shaders\Object3d.PS.hlsl">
@@ -336,6 +345,18 @@
     </ClInclude>
     <ClInclude Include="project\gamedata\explosion\explosion.h">
       <Filter>ヘッダー ファイル\project\gamedata\explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\MapManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\VectorInt.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

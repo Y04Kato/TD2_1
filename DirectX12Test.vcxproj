@@ -114,7 +114,10 @@
     <ClCompile Include="base\components\math\MatrixCalculation.cpp" />
     <ClCompile Include="base\CJEngine.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="project\gamedata\Camera.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion.cpp" />
+    <ClCompile Include="project\gamedata\MapManager.cpp" />
+    <ClCompile Include="project\gamedata\Player.cpp" />
     <ClCompile Include="project\gamedata\scenes\GameClearScene.cpp" />
     <ClCompile Include="project\gamedata\scenes\GamePlayScene.cpp" />
     <ClCompile Include="project\gamedata\scenes\GameTitleScene.cpp" />
@@ -178,7 +181,10 @@
       <DeploymentContent>false</DeploymentContent>
     </ClInclude>
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="project\gamedata\Camera.h" />
     <ClInclude Include="project\gamedata\explosion\explosion.h" />
+    <ClInclude Include="project\gamedata\MapManager.h" />
+    <ClInclude Include="project\gamedata\Player.h" />
     <ClInclude Include="project\gamedata\scenes\GameClearScene.h" />
     <ClInclude Include="project\gamedata\scenes\GamePlayScene.h" />
     <ClInclude Include="project\gamedata\scenes\GameTitleScene.h" />
@@ -188,6 +194,7 @@
     <ClInclude Include="base\components\utilities\collisionManager\CollisionConfig.h" />
     <ClInclude Include="base\components\utilities\collisionManager\CollisionManager.h" />
     <ClInclude Include="base\components\utilities\globalVariables\GlobalVariables.h" />
+    <ClInclude Include="project\gamedata\VectorInt.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

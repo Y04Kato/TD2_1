@@ -1,6 +1,6 @@
 #include "GamePlayScene.h"
 #include "components/utilities/globalVariables/GlobalVariables.h"
-
+#include "../MapManager.h"
 void GamePlayScene::Initialize() {
 	CJEngine_ = CitrusJunosEngine::GetInstance();
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -90,6 +90,8 @@ void GamePlayScene::Initialize() {
 	const char* groupName = "GamePlayScene";
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "Test", 90);
+
+	MapManager::GetInstance()->Initialize();
 }
 
 void GamePlayScene::Update() {
@@ -212,6 +214,7 @@ void GamePlayScene::Update() {
 	ImGui::End();
 
 	explosion_->Update(worldTransformModel_);
+	MapManager::GetInstance()->Update();
 }
 
 void GamePlayScene::Draw() {
@@ -234,6 +237,7 @@ void GamePlayScene::Draw() {
 	}
 
 	explosion_->Draw(viewProjection_);
+	MapManager::GetInstance()->Draw(viewProjection_);
 #pragma endregion
 
 #pragma region 前景スプライト描画
