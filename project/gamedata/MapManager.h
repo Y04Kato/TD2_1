@@ -54,6 +54,8 @@ public:
 
 	static MapManager* GetInstance();
 	void Initialize();
+	//ロード時間短縮用
+	void ShortInitialize();
 	void Update();
 	void MapRead();
 	void FindChain();

@@ -10,6 +10,12 @@ void Player::Initialize() {
 	worldTransformBreak_.Initialize();
 	targetWorldTransform_.Initialize();
 	nowWorldTransform_.Initialize();
+	mapPosition_ = MapManager::GetInstance()->GetCorePosition();
+	mapPosition_.y --;
+	worldTransform_.translation_ = MapManager::GetInstance()->GetworldPosition(mapPosition_);
+	worldTransform_.translation_.num[1] = 2.0f;
+	worldTransform_.UpdateMatrix();
+	phase_ = Phase::Idle;
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
@@ -20,6 +26,19 @@ void Player::Initialize() {
 	isExplosion_ = false;
 
 	debugCamera_ = DebugCamera::GetInstance();
+}
+
+void Player::ShortInitialize() {
+	explosionTimer_ = 10;
+	isExplosion_ = false;
+	mapPosition_ = MapManager::GetInstance()->GetCorePosition();
+	mapPosition_.y--;
+	frameCount_ = 0;
+	isMove_ = false;
+	worldTransform_.translation_ = MapManager::GetInstance()->GetworldPosition(mapPosition_);
+	worldTransform_.translation_.num[1] = 2.0f;
+	worldTransform_.UpdateMatrix();
+	phase_ = Phase::Idle;
 }
 
 void Player::Update() {

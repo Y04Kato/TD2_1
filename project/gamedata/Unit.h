@@ -17,6 +17,8 @@ public:
 	};
 
 	void Initialize();
+	//ロード時間短縮用再初期化
+	void ShortInitialize();
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 

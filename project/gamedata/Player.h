@@ -20,6 +20,8 @@ public:
 	};
 
 	void Initialize();
+	//ロード時間短縮用
+	void ShortInitialize();
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 

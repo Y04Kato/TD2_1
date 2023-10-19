@@ -95,6 +95,8 @@ void GamePlayScene::Initialize() {
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "Test", 90);
 #endif
+	//Map
+	MapManager::GetInstance()->Initialize();
 
 	//Player
 	player_.reset(new Player());
@@ -103,8 +105,6 @@ void GamePlayScene::Initialize() {
 	//Unit
 	unit_.reset(new Unit());
 	unit_->Initialize();
-
-	MapManager::GetInstance()->Initialize();
 }
 
 void GamePlayScene::Update() {
@@ -125,7 +125,10 @@ void GamePlayScene::Update() {
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_A)) {
 		OutputDebugStringA("Hit A\n");
-		Initialize();
+		//Initialize();
+		MapManager::GetInstance()->ShortInitialize();
+		player_->ShortInitialize();
+		unit_->ShortInitialize();
 	}
 
 	for (int i = 0; i < 2; i++) {

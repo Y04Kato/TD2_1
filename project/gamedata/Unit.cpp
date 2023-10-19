@@ -27,6 +27,23 @@ void Unit::Initialize() {
 	worldTransform_.UpdateMatrix();
 }
 
+void Unit::ShortInitialize() {
+	frameCount_ = 0;
+	mapPosition_.x = 7;
+	mapPosition_.y = 4;
+	mapPosition_.x = std::clamp(mapPosition_.x, 0, int(MapManager::GetInstance()->kMapWidth - 1));
+	mapPosition_.y = std::clamp(mapPosition_.y, 0, int(MapManager::GetInstance()->kMapHeight - 1));
+	mapPosition_ = MapManager::GetInstance()->GetCorePosition();
+	Vector3 worldPos = MapManager::GetworldPosition(mapPosition_);
+	worldTransform_.translation_.num[0] = worldPos.num[0];
+	worldTransform_.translation_.num[2] = worldPos.num[2];
+	worldTransform_.translation_.num[1] = 2.0f;
+	worldTransform_.UpdateMatrix();
+	isLive_ = true;
+	respawnCoolTime = 0;
+	phase_ = Phase::Next;
+}
+
 void Unit::Update() {
 
 	if (!isLive_)

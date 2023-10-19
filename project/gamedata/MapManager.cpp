@@ -31,6 +31,11 @@ void MapManager::Initialize() {
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 }
 
+void MapManager::ShortInitialize() {
+	BombCount = 0;
+	MapRead();
+}
+
 void MapManager::Update() {
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
