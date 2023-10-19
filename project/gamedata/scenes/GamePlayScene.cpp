@@ -123,8 +123,9 @@ void GamePlayScene::Update() {
 	directionalLight_.direction = Normalise(directionalLight_.direction);
 
 #ifdef _DEBUG
-	if (input_->PressKey(DIK_A)) {
+	if (input_->TriggerKey(DIK_A)) {
 		OutputDebugStringA("Hit A\n");
+		Initialize();
 	}
 
 	for (int i = 0; i < 2; i++) {
