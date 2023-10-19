@@ -52,7 +52,7 @@ void Player::Update() {
 
 	if (explosionTimer_ <= 0 && isExplosion_ == true) {
 		isExplosion_ = false;
-		debugCamera_->SetCamera({ 14.0f,43.0f,-20.0f }, { -5.0f,0.0f,0.0f });
+		debugCamera_->SetCamera({ 18.0f,39.0f,-24.0f }, { -5.0f,0.0f,0.0f });
 	}
 
 #ifdef _DEBUG
