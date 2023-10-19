@@ -13,7 +13,10 @@ MapManager* MapManager::GetInstance()
 void MapManager::Initialize() {
 	bombs_.clear();
 	MapRead(); 
-	model.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
+	modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
+	modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
+	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
+	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
 
@@ -175,16 +178,16 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 			if (map[y][x].mapstate != MapState::None) {
 				if (map[y][x].mapstate == MapState::Block)
 				{
-					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{1.0f,1.0f,1.0f,1.0f},directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{1.0f,1.0f,1.0f,1.0f},directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Core) {
-					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_);
+					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Bomb) {
-					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.0f,1.0f,0.0f,1.0f }, directionalLight_);
+					modelBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::UnChaindBomb) {
-					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.0f,0.5f,0.0f,1.0f }, directionalLight_);
+					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 			}
 		}

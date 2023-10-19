@@ -64,7 +64,10 @@ private:
 	MapManager(const MapManager&) = delete;
 	MapManager& operator=(const MapManager&) = delete;
 
-	std::unique_ptr<Model> model;
+	std::unique_ptr<Model> modelBlock;
+	std::unique_ptr<Model> modelCore;
+	std::unique_ptr<Model> modelBomb;
+	std::unique_ptr<Model> modelUnChaindBomb;
 
 	uint32_t blockTextureHandle_=0;
 	uint32_t coreTextureHandle_=0;
