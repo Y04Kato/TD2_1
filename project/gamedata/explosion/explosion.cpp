@@ -43,7 +43,7 @@ void Explosion::Update(const WorldTransform& worldTransform) {
 		}
 		testFlag = false;
 	}
-
+#ifdef _DEBUG
 	ImGui::Begin("Explosion");
 	ImGui::DragFloat("boundSpeed", &bounceSpeed_);
 	ImGui::DragFloat("timer", &time_);
@@ -51,6 +51,7 @@ void Explosion::Update(const WorldTransform& worldTransform) {
 	ImGui::DragFloat3("translation", worldTransform_->translation_.num);
 	ImGui::Text("%f", worldTransform.translation_.num[0]);
 	ImGui::End();
+#endif
 
 	for (int i = 0; i < Max; i++) {
 		worldTransform_[i].translation_.num[0] = (1.0f - time_) * worldTransform.translation_.num[0] + time_ * transform_[i].translate.num[0];

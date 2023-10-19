@@ -13,11 +13,12 @@ void DebugCamera::initialize() {
 }
 
 void DebugCamera::Update() {
-
+#ifdef _DEBUG
 	ImGui::Begin("DebugCamera");
 	ImGui::SliderFloat3("rotation", viewProjection_.rotation_.num, -100, 100);
 	ImGui::SliderFloat3("translation", viewProjection_.translation_.num, -50, 50);
 	ImGui::End();
+#endif
 	viewProjection_.UpdateMatrix();
 }
 

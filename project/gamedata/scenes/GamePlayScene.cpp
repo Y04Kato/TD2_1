@@ -7,6 +7,7 @@ void GamePlayScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	textureManager_ = TextureManager::GetInstance();
 
+#ifdef _DEBUG
 	//三角形
 	for (int i = 0; i < 2; i++) {
 		triangle_[i] = new CreateTriangle();
@@ -53,6 +54,7 @@ void GamePlayScene::Initialize() {
 	model_->Initialize("project/gamedata/resources/block", "block.obj");
 	worldTransformModel_.Initialize();
 	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
+#endif
 
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
@@ -68,9 +70,12 @@ void GamePlayScene::Initialize() {
 
 	//Audio
 	audio_ = Audio::GetInstance();
+
+#ifdef _DEBUG
 	soundData1_ = audio_->SoundLoadWave("project/gamedata/resources/fanfare.wav");
 	//音声再生
 	audio_->SoundPlayWave(soundData1_);
+#endif
 
 	// デバッグカメラの初期化
 	debugCamera_ = DebugCamera::GetInstance();
@@ -82,6 +87,15 @@ void GamePlayScene::Initialize() {
 	//CollisionManager
 	collisionManager_ = CollisionManager::GetInstance();
 
+#ifdef _DEBUG
+	GlobalVariables* globalVariables{};
+	globalVariables = GlobalVariables::GetInstance();
+
+	const char* groupName = "GamePlayScene";
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "Test", 90);
+#endif
+
 	//Player
 	player_.reset(new Player());
 	player_->Initialize();
@@ -89,13 +103,6 @@ void GamePlayScene::Initialize() {
 	//Unit
 	unit_.reset(new Unit());
 	unit_->Initialize();
-
-	GlobalVariables* globalVariables{};
-	globalVariables = GlobalVariables::GetInstance();
-
-	const char* groupName = "GamePlayScene";
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "Test", 90);
 
 	MapManager::GetInstance()->Initialize();
 }
@@ -113,11 +120,12 @@ void GamePlayScene::Update() {
 	viewProjection_.rotation_ = debugCamera_->GetViewProjection()->rotation_;
 	viewProjection_.UpdateMatrix();
 
+	directionalLight_.direction = Normalise(directionalLight_.direction);
+
+#ifdef _DEBUG
 	if (input_->PressKey(DIK_A)) {
 		OutputDebugStringA("Hit A\n");
 	}
-
-	directionalLight_.direction = Normalise(directionalLight_.direction);
 
 	for (int i = 0; i < 2; i++) {
 		worldTransformTriangle_[i].UpdateMatrix();
@@ -219,6 +227,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("%f", ImGui::GetIO().Framerate);
 
 	ImGui::End();
+#endif
 
 	MapManager::GetInstance()->Update();
 	player_->Update();
@@ -229,6 +238,7 @@ void GamePlayScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	CJEngine_->PreDraw3D();
 
+#ifdef _DEBUG
 	if (isTriangleDraw1_) {//Triangle描画
 		triangle_[0]->Draw(worldTransformTriangle_[0],viewProjection_,triangleMaterial_[0], uvResourceNum_, directionalLight_);
 	}
@@ -243,6 +253,7 @@ void GamePlayScene::Draw() {
 	if (isModelDraw_) {
 		model_->Draw(worldTransformModel_,viewProjection_,modelMaterial_, directionalLight_);
 	}
+#endif
 
 	MapManager::GetInstance()->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
@@ -252,15 +263,19 @@ void GamePlayScene::Draw() {
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
 
+#ifdef _DEBUG
 	if (isSpriteDraw_) {
 		for (int i = 0; i < 1; i++) {//Sprite描画
 			sprite_[i]->Draw(spriteTransform_, SpriteuvTransform_, spriteData_.material, uvResourceNum_);
 		}
 	}
+#endif
 #pragma endregion
 }
 
 void GamePlayScene::Finalize() {
+
+#ifdef _DEBUG
 	for (int i = 0; i < 2; i++) {
 		triangle_[i]->Finalize();
 		delete triangle_[i];
@@ -278,6 +293,7 @@ void GamePlayScene::Finalize() {
 	delete model_;
 
 	audio_->SoundUnload(&soundData1_);
+#endif
 }
 
 void GamePlayScene::ApplyGlobalVariables() {
