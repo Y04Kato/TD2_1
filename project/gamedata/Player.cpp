@@ -3,7 +3,7 @@
 #include <algorithm>
 void Player::Initialize() {
 	input_ = Input::GetInstance();
-	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
+	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/Cursor", "Cursor.obj"));
 	worldTransform_.Initialize();
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
@@ -66,6 +66,6 @@ void Player::Update() {
 
 
 void Player::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_);
+	model_->Draw(worldTransform_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	explosion_->Draw(viewProjection);
 }
