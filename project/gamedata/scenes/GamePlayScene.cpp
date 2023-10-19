@@ -231,8 +231,8 @@ void GamePlayScene::Update() {
 #endif
 
 	MapManager::GetInstance()->Update();
-	player_->Update();
 	unit_->Update();
+	player_->Update();
 }
 
 void GamePlayScene::Draw() {

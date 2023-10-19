@@ -48,4 +48,6 @@ private:
 
 	//設置の向き
 	MapManager::Direction direction_;
+
+	Vector4 material;
 };

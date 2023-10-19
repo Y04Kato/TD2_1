@@ -19,6 +19,8 @@ void Unit::Initialize() {
 	worldTransform_.translation_.num[2] = worldPos.num[2];
 	worldTransform_.translation_.num[1] = 2.0f;
 
+	material = { 1.0f,0.0f,0.0f,1.0f };
+
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
@@ -38,18 +40,20 @@ void Unit::Update() {
 			worldTransform_.translation_.num[0] = worldPos.num[0];
 			worldTransform_.translation_.num[2] = worldPos.num[2];
 			worldTransform_.translation_.num[1] = 2.0f;
+			material = { 1.0f,0.0f,0.0f,1.0f };
 			worldTransform_.UpdateMatrix();
 		}
 		respawnCoolTime--;
+		worldTransform_.translation_.num[1] -= 0.2f;
+		material.num[3] -= 0.01f;
 	}
 	else {
-		(this->*phaseTable[static_cast<size_t>(phase_)])();
-
 		if (MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::None ||
 			MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::UnChaindBomb) {
 			isLive_ = false;
 			respawnCoolTime = kRespawnTime;
 		}
+		(this->*phaseTable[static_cast<size_t>(phase_)])();
 	}
 	worldTransform_.UpdateMatrix();
 
@@ -86,6 +90,7 @@ void Unit::Next() {
 
 	targetWorldTransform_.translation_ = MapManager::GetInstance()->GetworldPosition(target_);
 	nowWorldTransform_.translation_ = MapManager::GetInstance()->GetworldPosition(mapPosition_);
+
 	if (MapManager::GetInstance()->GetState(target_) ==
 		MapManager::MapState::None)
 	{
@@ -117,8 +122,6 @@ void Unit::Create()
 }
 
 void Unit::Draw(const ViewProjection& viewProjection) {
-	if (isLive_) {
-		model_->Draw(worldTransform_, viewProjection, Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_);
-	}
 
+	model_->Draw(worldTransform_, viewProjection, material, directionalLight_);
 }
