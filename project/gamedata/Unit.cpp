@@ -25,6 +25,7 @@ void Unit::Initialize() {
 }
 
 void Unit::Update() {
+
 	if (!isLive_)
 	{
 		if (respawnCoolTime <= 0)
@@ -107,4 +108,5 @@ void Unit::Draw(const ViewProjection& viewProjection) {
 	if (isLive_) {
 		model_->Draw(worldTransform_, viewProjection, Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_);
 	}
+
 }

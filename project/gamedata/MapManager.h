@@ -9,6 +9,8 @@
 #include "components/manager/TextureManager.h"
 #include "components/3d/Model.h"
 
+#include "gamedata/explosion/explosion2.h"
+
 class MapManager {
 public: 
 	enum class MapState {
@@ -58,6 +60,8 @@ public:
 
 	void Draw(const ViewProjection& );
 
+	static const int kBombMax = 15;
+
 private:
 	MapManager() = default;
 	~MapManager() = default;
@@ -80,4 +84,7 @@ private:
 	std::list<Bomb> bombs_;
 
 	DirectionalLight directionalLight_;
+
+	Explosion2* explosion_[kBombMax];
+	int BombCount = 0;
 };

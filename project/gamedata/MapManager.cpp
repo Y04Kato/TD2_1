@@ -12,14 +12,18 @@ MapManager* MapManager::GetInstance()
 
 void MapManager::Initialize() {
 	bombs_.clear();
-	MapRead(); 
+	for (int i = 0; i < kBombMax; i++) {
+		explosion_[i] = new Explosion2();
+		explosion_[i]->Initialize();
+	}
+
+	MapRead();
 	modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
 	modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
 	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
 	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
-
 }
 
 void MapManager::Update() {
@@ -28,7 +32,9 @@ void MapManager::Update() {
 		MapRead();
 	}
 #endif // _DEBUG
-
+	for (int i = 0; i < kBombMax; i++) {
+		explosion_[i]->Update();
+	}
 }
 
 void MapManager::MapRead()
@@ -62,9 +68,13 @@ void MapManager::MapRead()
 				if (map[y][x].mapstate == MapState::Bomb)
 				{
 					bombs_.push_back({
-					    {x, y},
-                        0
-                    });
+						{x, y},
+						0
+						});
+
+					explosion_[BombCount]->SetExplosion(map[y][x].worldTransform);
+					BombCount++;
+
 				}
 			}
 			x++;
@@ -75,22 +85,22 @@ void MapManager::MapRead()
 	for (Bomb& bomb : bombs_) {
 		bomb.chaind = 0;
 		if (bomb.position.y > 0 &&
-		    map[bomb.position.y - 1][bomb.position.x].mapstate == MapState::Block) {
+			map[bomb.position.y - 1][bomb.position.x].mapstate == MapState::Block) {
 			bomb.chaind++;
 		}
 		if (bomb.position.y < kMapHeight - 1 &&
-		    map[bomb.position.y + 1][bomb.position.x].mapstate == MapState::Block) {
+			map[bomb.position.y + 1][bomb.position.x].mapstate == MapState::Block) {
 			bomb.chaind++;
 		}
 		if (bomb.position.x > 0 &&
-		    map[bomb.position.y][bomb.position.x - 1].mapstate == MapState::Block) {
+			map[bomb.position.y][bomb.position.x - 1].mapstate == MapState::Block) {
 			bomb.chaind++;
 		}
 		if (bomb.position.x < kMapWidth - 1 &&
-		    map[bomb.position.y][bomb.position.x + 1].mapstate == MapState::Block) {
+			map[bomb.position.y][bomb.position.x + 1].mapstate == MapState::Block) {
 			bomb.chaind++;
 		}
-		if (bomb.chaind==0) {
+		if (bomb.chaind == 0) {
 			map[bomb.position.y][bomb.position.x].mapstate = MapState::UnChaindBomb;
 		}
 	}
@@ -122,6 +132,15 @@ void MapManager::FindChain()
 			}
 			if (map[y][x].mapstate == MapState::Bomb) {
 				map[y][x].mapstate = MapState::UnChaindBomb;
+				for (int i = 0; i < kBombMax; i++) {
+					if (map[y][x].mapstate == MapState::UnChaindBomb) {
+						if (map[y][x].worldTransform.translation_.num[0] == explosion_[i]->GetworldTransform().translation_.num[0]) {
+							if (map[y][x].worldTransform.translation_.num[2] == explosion_[i]->GetworldTransform().translation_.num[2]) {
+								explosion_[i]->ExplosionFlagTrue();
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -148,19 +167,19 @@ void MapManager::Protect(int x, int y) {
 	if (map[y][x].mapstate == MapState::Bomb) {
 		map[y][x].mapstate = MapState::ChaindBomb;
 	}
-	if (y > 0 && map[y - 1][x].mapstate == MapState::Block || 
+	if (y > 0 && map[y - 1][x].mapstate == MapState::Block ||
 		y > 0 && map[y - 1][x].mapstate == MapState::Bomb) {
 		Protect(x, y - 1);
 	}
 	if (y < kMapHeight - 1 && map[y + 1][x].mapstate == MapState::Block ||
-	    y < kMapHeight - 1 && map[y + 1][x].mapstate == MapState::Bomb) {
+		y < kMapHeight - 1 && map[y + 1][x].mapstate == MapState::Bomb) {
 		Protect(x, y + 1);
 	}
-	if (x > 0 && map[y][x - 1].mapstate == MapState::Block || 
+	if (x > 0 && map[y][x - 1].mapstate == MapState::Block ||
 		x > 0 && map[y][x - 1].mapstate == MapState::Bomb) {
 		Protect(x - 1, y);
 	}
-	if (x < kMapWidth - 1 && map[y][x + 1].mapstate == MapState::Block || 
+	if (x < kMapWidth - 1 && map[y][x + 1].mapstate == MapState::Block ||
 		x < kMapWidth - 1 && map[y][x + 1].mapstate == MapState::Bomb) {
 		Protect(x + 1, y);
 	}
@@ -168,7 +187,7 @@ void MapManager::Protect(int x, int y) {
 
 Vector3 MapManager::GetworldPosition(VectorInt2 vector) { return GetInstance()->map[vector.y][vector.x].worldTransform.translation_; }
 Vector3 MapManager::GetCenterworldPosition() {
-	return GetInstance()->map[kMapHeight/2][kMapWidth/2].worldTransform.translation_;
+	return GetInstance()->map[kMapHeight / 2][kMapWidth / 2].worldTransform.translation_;
 }
 
 void MapManager::Draw(const ViewProjection& viewProjecttion)
@@ -178,7 +197,7 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 			if (map[y][x].mapstate != MapState::None) {
 				if (map[y][x].mapstate == MapState::Block)
 				{
-					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{1.0f,1.0f,1.0f,1.0f},directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Core) {
 					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
@@ -188,6 +207,13 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 				}
 				if (map[y][x].mapstate == MapState::UnChaindBomb) {
 					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					for (int i = 0; i < kBombMax; i++) {
+						if (map[y][x].worldTransform.translation_.num[0] == explosion_[i]->GetworldTransform().translation_.num[0]) {
+							if (map[y][x].worldTransform.translation_.num[2] == explosion_[i]->GetworldTransform().translation_.num[2]) {
+								explosion_[i]->Draw(viewProjecttion);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -208,24 +234,24 @@ void MapManager::CreateBlock(const VectorInt2& position) {
 
 	if (map[position.y][position.x].mapstate == MapState::None) {
 		map[position.y][position.x].mapstate = MapState::Block;
-		if (map[clampdPos.y-1][clampdPos.x].mapstate == MapState::UnChaindBomb){
-			map[clampdPos.y-1][clampdPos.x].mapstate = MapState::Bomb;
+		if (map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::UnChaindBomb) {
+			map[clampdPos.y - 1][clampdPos.x].mapstate = MapState::Bomb;
 		}
-		if (map[clampdPos.y+1][clampdPos.x].mapstate == MapState::UnChaindBomb) {
-			map[clampdPos.y+1][clampdPos.x].mapstate = MapState::Bomb;
+		if (map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::UnChaindBomb) {
+			map[clampdPos.y + 1][clampdPos.x].mapstate = MapState::Bomb;
 		}
-		if (map[clampdPos.y][clampdPos.x-1].mapstate == MapState::UnChaindBomb) {
-			map[clampdPos.y][clampdPos.x-1].mapstate = MapState::Bomb;
+		if (map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::UnChaindBomb) {
+			map[clampdPos.y][clampdPos.x - 1].mapstate = MapState::Bomb;
 		}
-		if (map[clampdPos.y][clampdPos.x+1].mapstate == MapState::UnChaindBomb) {
-			map[clampdPos.y][clampdPos.x+1].mapstate = MapState::Bomb;
+		if (map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::UnChaindBomb) {
+			map[clampdPos.y][clampdPos.x + 1].mapstate = MapState::Bomb;
 		}
 	}
 }
 
 VectorInt2 MapManager::GetPriority() {
-	for (Bomb &bomb : bombs_){
-		bomb.chaind=0;
+	for (Bomb& bomb : bombs_) {
+		bomb.chaind = 0;
 		if (bomb.position.y > 0 && map[bomb.position.y - 1][bomb.position.x].mapstate == MapState::Block) {
 			bomb.chaind++;
 		}
@@ -237,7 +263,7 @@ VectorInt2 MapManager::GetPriority() {
 		}
 		if (bomb.position.x < kMapWidth - 1 && map[bomb.position.y][bomb.position.x + 1].mapstate == MapState::Block) {
 			bomb.chaind++;
-		}	
+		}
 	}
 	Bomb priolity = bombs_.front();
 	for (Bomb& bomb : bombs_) {

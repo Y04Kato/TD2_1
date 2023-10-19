@@ -225,6 +225,9 @@
     <ClCompile Include="project\gamedata\Unit.cpp">
       <Filter>ソース ファイル\project\gamedata</Filter>
     </ClCompile>
+    <ClCompile Include="project\gamedata\explosion\explosion2.cpp">
+      <Filter>ソース ファイル\project\gamedata\explosion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="project\gamedata\resources\shaders\Object3d.PS.hlsl">
@@ -357,6 +360,9 @@
     </ClInclude>
     <ClInclude Include="project\gamedata\Unit.h">
       <Filter>ヘッダー ファイル\project\gamedata</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\explosion\explosion2.h">
+      <Filter>ヘッダー ファイル\project\gamedata\explosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
