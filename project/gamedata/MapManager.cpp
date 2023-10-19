@@ -18,7 +18,12 @@ void MapManager::Initialize() {
 	}
 
 	MapRead();
-	modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
+	modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadBase", "RoadBase.obj"));
+	modelTop_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadDown", "RoadDown.obj"));
+	modelDown_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadTop", "RoadTop.obj"));
+	modelLeft_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadRight", "RoadRight.obj"));
+	modelRight_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadLeft", "RoadLeft.obj"));
+	
 	modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
 	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
 	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
@@ -56,6 +61,12 @@ void MapManager::MapRead()
 		map[y][0].worldTransform.translation_.num[0] = float(0) * 2.0f;
 		map[y][0].worldTransform.translation_.num[2] = -float(y) * 2.0f;
 		map[y][0].worldTransform.UpdateMatrix();
+		if (map[y][0].mapstate == MapState::Bomb) {
+			bombs_.push_back({
+				{x, 0},
+				0
+				});
+		}
 		x = 1;
 		while (ptr != NULL && x < kMapWidth) {
 			ptr = strtok_s(NULL, ",", &context);
@@ -81,6 +92,7 @@ void MapManager::MapRead()
 		}
 		y++;
 	}
+
 	fclose(fp);
 	for (Bomb& bomb : bombs_) {
 		bomb.chaind = 0;
@@ -198,6 +210,18 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 				if (map[y][x].mapstate == MapState::Block)
 				{
 					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					if (map[y][x].top) {
+						modelTop_->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					}
+					if (map[y][x].down) {
+						modelDown_->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					}
+					if (map[y][x].left) {
+						modelLeft_->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					}
+					if (map[y][x].right) {
+						modelRight_->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					}
 				}
 				if (map[y][x].mapstate == MapState::Core) {
 					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
@@ -222,6 +246,16 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 
 void MapManager::BreakBlock(const VectorInt2& position) {
 	if (map[position.y][position.x].mapstate == MapState::Block) {
+		VectorInt2 clampdPos;
+		clampdPos.x = std::clamp(int(position.x), 1, int(kMapWidth - 1));
+		clampdPos.y = std::clamp(int(position.y), 1, int(kMapHeight - 1));
+
+
+		map[clampdPos.y - 1][clampdPos.x].down = false;
+		map[clampdPos.y + 1][clampdPos.x].top = false;
+		map[clampdPos.y][clampdPos.x - 1].right = false;
+		map[clampdPos.y][clampdPos.x + 1].left = false;
+
 		map[position.y][position.x].mapstate = MapState::None;
 		FindChain();
 	}
@@ -236,16 +270,70 @@ void MapManager::CreateBlock(const VectorInt2& position) {
 		map[position.y][position.x].mapstate = MapState::Block;
 		if (map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::UnChaindBomb) {
 			map[clampdPos.y - 1][clampdPos.x].mapstate = MapState::Bomb;
+			map[position.y][position.x].top = true;
 		}
 		if (map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::UnChaindBomb) {
 			map[clampdPos.y + 1][clampdPos.x].mapstate = MapState::Bomb;
+			map[position.y][position.x].down = true;
 		}
 		if (map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::UnChaindBomb) {
 			map[clampdPos.y][clampdPos.x - 1].mapstate = MapState::Bomb;
+			map[position.y][position.x].right = true;
 		}
 		if (map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::UnChaindBomb) {
 			map[clampdPos.y][clampdPos.x + 1].mapstate = MapState::Bomb;
+			map[position.y][position.x].left = true;
 		}
+	}
+}
+
+void MapManager::CreateBlock(const VectorInt2& position, Direction direction) {
+	if (map[position.y][position.x].mapstate == MapState::None) {
+		map[position.y][position.x].top = false;
+		map[position.y][position.x].down = false;
+		map[position.y][position.x].left = false;
+		map[position.y][position.x].right = false;
+
+		if (direction == Direction::Top) {
+			map[position.y][position.x].down = true;
+		}
+		else if (direction == Direction::Down) {
+			map[position.y][position.x].top = true;
+		}
+		else if (direction == Direction::Left) {
+			map[position.y][position.x].right = true;
+		}
+		else if (direction == Direction::Right) {
+			map[position.y][position.x].left = true;
+		}
+		VectorInt2 clampdPos;
+		clampdPos.x = std::clamp(int(position.x), 1, int(kMapWidth - 1));
+		clampdPos.y = std::clamp(int(position.y), 1, int(kMapHeight - 1));
+
+		if (map[position.y][position.x].mapstate == MapState::None) {
+			if (map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Block ||
+				map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Core) {
+				map[clampdPos.y - 1][clampdPos.x].down = true;
+				map[position.y][position.x].top = true;
+			}
+			if (map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Block ||
+				map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Core) {
+				map[clampdPos.y + 1][clampdPos.x].top = true;
+				map[position.y][position.x].down = true;
+			}
+			if (map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Block ||
+				map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Core) {
+				map[clampdPos.y][clampdPos.x - 1].right = true;
+				map[position.y][position.x].left = true;
+			}
+			if (map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Block ||
+				map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Core) {
+				map[clampdPos.y][clampdPos.x + 1].left = true;
+				map[position.y][position.x].right = true;
+			}
+		}
+
+		CreateBlock(position);
 	}
 }
 

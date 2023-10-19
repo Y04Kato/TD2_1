@@ -1,5 +1,6 @@
 #include "Unit.h"
 #include <algorithm>
+
 void (Unit::* Unit::phaseTable[])() = { &Unit::Next,&Unit::Move, &Unit::Create };
 
 void Unit::Initialize() {
@@ -51,10 +52,13 @@ void Unit::Update() {
 		}
 	}
 	worldTransform_.UpdateMatrix();
+
+#ifdef _DEBUG
 	ImGui::Begin("unit");
 	ImGui::SliderInt("move", &moveEnd, 1, 120);
 	ImGui::SliderInt("cooltime", &kRespawnTime, 0, 1800);
 	ImGui::End();
+#endif
 }
 void Unit::Next() {
 	VectorInt2 targetBomb = MapManager::GetInstance()->GetPriority();
@@ -62,9 +66,17 @@ void Unit::Next() {
 	targetBomb.y -= mapPosition_.y;
 	if (std::abs(targetBomb.x) < std::abs(targetBomb.y)) {
 		targetBomb.x = 0;
+		direction_ = MapManager::Direction::Top;
+		if (targetBomb.y > 0) {
+			direction_ = MapManager::Direction::Down;
+		}
 	}
 	else {
 		targetBomb.y = 0;
+		direction_ = MapManager::Direction::Left;
+		if (targetBomb.x > 0) {
+			direction_ = MapManager::Direction::Right;
+		}
 	}
 
 	targetBomb.x = std::clamp(targetBomb.x, -1, 1);
@@ -100,7 +112,7 @@ void Unit::Move() {
 
 void Unit::Create()
 {
-	MapManager::GetInstance()->CreateBlock(target_);
+	MapManager::GetInstance()->CreateBlock(target_, direction_);
 	phase_ = Phase::Next;
 }
 

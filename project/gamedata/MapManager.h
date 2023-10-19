@@ -23,8 +23,21 @@ public:
 		UnChaindBomb,
 	};
 
+	enum class Direction {
+		None,
+		Top,
+		Down,
+		Left,
+		Right,
+		//Horizon,
+	};
+
 	struct Map {
 		MapState mapstate;
+		bool top;
+		bool down;
+		bool left;
+		bool right;
 		WorldTransform worldTransform;
 	};
 
@@ -51,6 +64,7 @@ public:
 
 	void BreakBlock(const VectorInt2& position);
 	void CreateBlock(const VectorInt2& position);
+	void CreateBlock(const VectorInt2& position, Direction direction);
 
 	MapState GetState(const VectorInt2& positiom) { return map[positiom.y][positiom.x].mapstate; };
 
@@ -69,6 +83,11 @@ private:
 	MapManager& operator=(const MapManager&) = delete;
 
 	std::unique_ptr<Model> modelBlock;
+	std::unique_ptr<Model> modelTop_;
+	std::unique_ptr<Model> modelDown_;
+	std::unique_ptr<Model> modelLeft_;
+	std::unique_ptr<Model> modelRight_;
+
 	std::unique_ptr<Model> modelCore;
 	std::unique_ptr<Model> modelBomb;
 	std::unique_ptr<Model> modelUnChaindBomb;
