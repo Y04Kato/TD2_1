@@ -3,7 +3,6 @@
 #include <algorithm>
 void Player::Initialize() {
 	input_ = Input::GetInstance();
-	//model_.reset(Model::Create());
 	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
 	worldTransform_.Initialize();
 	//ライト

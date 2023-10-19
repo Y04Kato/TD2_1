@@ -83,8 +83,12 @@ void GamePlayScene::Initialize() {
 	collisionManager_ = CollisionManager::GetInstance();
 
 	//Player
-	player_ = new Player();
+	player_.reset(new Player());
 	player_->Initialize();
+
+	//Unit
+	unit_.reset(new Unit());
+	unit_->Initialize();
 
 	GlobalVariables* globalVariables{};
 	globalVariables = GlobalVariables::GetInstance();
@@ -218,6 +222,7 @@ void GamePlayScene::Update() {
 
 	MapManager::GetInstance()->Update();
 	player_->Update();
+	unit_->Update();
 }
 
 void GamePlayScene::Draw() {
@@ -241,6 +246,7 @@ void GamePlayScene::Draw() {
 
 	MapManager::GetInstance()->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
+	unit_->Draw(viewProjection_);
 #pragma endregion
 
 #pragma region 前景スプライト描画

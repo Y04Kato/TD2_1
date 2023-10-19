@@ -2,9 +2,7 @@
 #include "MapManager.h"
 #include "components/3d/WorldTransform.h"
 #include "components/3d/ViewProjection.h"
-//#include "components/manager/TextureManager.h"
 #include "components/3d/Model.h"
-//#include "Input.h"
 #include "components/input/Input.h"
 #include "VectorInt.h"
 

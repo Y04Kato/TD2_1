@@ -14,6 +14,7 @@
 #include "components/utilities/collisionManager/CollisionConfig.h"
 
 #include "gamedata/Player.h"
+#include "gamedata/Unit.h"
 
 class GamePlayScene :public Iscene {
 public:
@@ -71,6 +72,7 @@ private:
 	int isSpriteDraw_;
 	int isModelDraw_;
 
-	Player* player_;
+	std::unique_ptr<Player> player_;
 
+	std::unique_ptr<Unit> unit_;
 };

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
-//#include "Input.h"
 #include "components/input/Input.h"
 
 MapManager* MapManager::GetInstance()
@@ -15,10 +14,6 @@ void MapManager::Initialize() {
 	bombs_.clear();
 	MapRead(); 
 	model.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
-	/*blockTextureHandle_ = TextureManager::Load("white1x1.png");
-	coreTextureHandle_ = TextureManager::Load("Core.png");
-	BombTextureHandle_ = TextureManager::Load("Bomb.png");
-	unChaindTextureHandle_ = TextureManager::Load("UnChaind.png");*/
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
 
@@ -167,12 +162,6 @@ void MapManager::Protect(int x, int y) {
 		Protect(x + 1, y);
 	}
 }
-/*
-VectorInt GetMapNum(const Vector3& worldPosition)
-{
-
-}
-*/
 
 Vector3 MapManager::GetworldPosition(VectorInt2 vector) { return GetInstance()->map[vector.y][vector.x].worldTransform.translation_; }
 Vector3 MapManager::GetCenterworldPosition() {
@@ -186,19 +175,15 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 			if (map[y][x].mapstate != MapState::None) {
 				if (map[y][x].mapstate == MapState::Block)
 				{
-					//model->Draw(map[y][x].worldTransform, viewProjecttion,blockTextureHandle_);
 					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{1.0f,1.0f,1.0f,1.0f},directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Core) {
-					//model->Draw(map[y][x].worldTransform, viewProjecttion,coreTextureHandle_);
 					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,0.0f,0.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Bomb) {
-					//model->Draw(map[y][x].worldTransform, viewProjecttion, BombTextureHandle_);
 					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.0f,1.0f,0.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::UnChaindBomb) {
-					//model->Draw(map[y][x].worldTransform, viewProjecttion, unChaindTextureHandle_);
 					model->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.0f,0.5f,0.0f,1.0f }, directionalLight_);
 				}
 			}
@@ -259,4 +244,15 @@ VectorInt2 MapManager::GetPriority() {
 		}
 	}
 	return priolity.position;
+}
+
+VectorInt2 MapManager::GetCorePosition() {
+	for (int y = 0; y < kMapHeight; y++) {
+		for (int x = 0; x < kMapWidth; x++) {
+			if (map[y][x].mapstate == MapState::Core) {
+				return VectorInt2{ x,y };
+			}
+		}
+	}
+	return { 0,0 };
 }

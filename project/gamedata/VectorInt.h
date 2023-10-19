@@ -10,10 +10,3 @@ struct VectorInt3 {
 	int y;
 	int z;
 };
-/*
-union VectorInt {
-	VectorInt2 vector;
-	VectorInt3 vector;
-	bool ArieOver;
-};
-*/

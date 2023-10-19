@@ -123,6 +123,7 @@
     <ClCompile Include="base\components\manager\SceneManager.cpp" />
     <ClCompile Include="base\components\utilities\collisionManager\CollisionManager.cpp" />
     <ClCompile Include="base\components\utilities\globalVariables\GlobalVariables.cpp" />
+    <ClCompile Include="project\gamedata\Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="project\gamedata\resources\shaders\Object2d.PS.hlsl">
@@ -192,6 +193,7 @@
     <ClInclude Include="base\components\utilities\collisionManager\CollisionConfig.h" />
     <ClInclude Include="base\components\utilities\collisionManager\CollisionManager.h" />
     <ClInclude Include="base\components\utilities\globalVariables\GlobalVariables.h" />
+    <ClInclude Include="project\gamedata\Unit.h" />
     <ClInclude Include="project\gamedata\VectorInt.h" />
   </ItemGroup>
   <ItemGroup>
