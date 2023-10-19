@@ -7,10 +7,11 @@ void Player::Initialize() {
 	input_ = Input::GetInstance();
 	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/Cursor", "Cursor.obj"));
 	worldTransform_.Initialize();
+	worldTransformBreak_.Initialize();
 	targetWorldTransform_.Initialize();
 	nowWorldTransform_.Initialize();
 	//ライト
-	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
+	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
 	//Explosion
 	explosion_ = new Explosion();
@@ -23,7 +24,7 @@ void Player::Initialize() {
 
 void Player::Update() {
 
-	explosion_->Update(worldTransform_);
+	explosion_->Update(worldTransformBreak_);
 
 	if (isExplosion_ == true) {
 		explosionTimer_--;
@@ -44,6 +45,7 @@ void Player::Update() {
 	(this->*phaseTable[static_cast<size_t>(phase_)])();
 	worldTransform_.translation_.num[1] = 2.0f;
 	worldTransform_.UpdateMatrix();
+	worldTransformBreak_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("player");
 	ImGui::SliderInt("move", &moveEnd, 1, 120);
@@ -91,6 +93,7 @@ void Player::Idle() {
 		moveTarget_ = { 0,0 };
 	}
 	if (input_->TriggerKey(DIK_SPACE)) {
+		worldTransformBreak_.translation_ = worldTransform_.translation_;
 		phase_ = Phase::Break;
 	}
 }

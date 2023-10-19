@@ -20,7 +20,7 @@ void Unit::Initialize() {
 	worldTransform_.translation_.num[1] = 2.0f;
 
 	//ライト
-	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
+	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
 	worldTransform_.UpdateMatrix();
 }

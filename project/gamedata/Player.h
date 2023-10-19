@@ -34,6 +34,7 @@ private:
 	VectorInt2 moveTarget_;
 	VectorInt2 nextPosition_;
 	WorldTransform worldTransform_;
+	WorldTransform worldTransformBreak_;
 
 	DirectionalLight directionalLight_;
 

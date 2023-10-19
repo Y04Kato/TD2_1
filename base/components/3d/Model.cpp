@@ -20,7 +20,7 @@ void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& vie
     uvtransformMtrix = Multiply(uvtransformMtrix, MakeRotateZMatrix(uvTransform.rotate.num[2]));
     uvtransformMtrix = Multiply(uvtransformMtrix, MakeTranslateMatrix(uvTransform.translate));
 
-    *material_ = { material,false };
+    *material_ = { material,true };
     material_->uvTransform = uvtransformMtrix;
     *directionalLight_ = light;
 

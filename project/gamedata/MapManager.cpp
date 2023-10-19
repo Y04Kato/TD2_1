@@ -28,7 +28,7 @@ void MapManager::Initialize() {
 	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
 	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
 	//ライト
-	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
+	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 }
 
 void MapManager::Update() {
@@ -40,6 +40,7 @@ void MapManager::Update() {
 	for (int i = 0; i < kBombMax; i++) {
 		explosion_[i]->Update();
 	}
+
 }
 
 void MapManager::MapRead()
