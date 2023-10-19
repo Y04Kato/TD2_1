@@ -9,6 +9,7 @@
 #include "gamedata/explosion/explosion.h"
 #include <memory>
 #include "components/debugcamera/DebugCamera.h"
+#include "MapManager.h"
 
 class Player {
 public:

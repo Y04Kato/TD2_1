@@ -18,14 +18,6 @@ void Explosion::Update(const WorldTransform& worldTransform) {
 	}
 	bounceSpeed_ += acceleration_;
 
-	if (input_->TriggerKey(DIK_SPACE)) {
-		bounceSpeed_ = 1.2f;
-		time_ = 0.0f;
-		startFlag = true;
-		testFlag = true;
-		drawFlag = true;
-	}
-
 	if (startFlag == true) {
 		time_ += 0.05f;
 		if (time_ >= 5.0f) {
@@ -68,4 +60,12 @@ void Explosion::Draw(const ViewProjection& viewProjection) {
 			model_[i]->Draw(worldTransform_[i], viewProjection, modelMaterial_, directionalLight_);
 		}
 	}
+}
+
+void Explosion::ExplosionFlagTrue(){
+	bounceSpeed_ = 1.2f;
+	time_ = 0.0f;
+	startFlag = true;
+	testFlag = true;
+	drawFlag = true;
 }

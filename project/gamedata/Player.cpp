@@ -42,9 +42,13 @@ void Player::Update() {
 	explosion_->Update(worldTransform_);
 	if (input_->TriggerKey(DIK_SPACE))
 	{
+		if (MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::Block) {
+			isExplosion_ = true;
+			explosion_->ExplosionFlagTrue();
+			explosionTimer_ = 10;
+		}
+
 		MapManager::GetInstance()->BreakBlock(mapPosition_);
-		isExplosion_ = true;
-		explosionTimer_ = 10;
 	}
 
 	if (isExplosion_ == true) {

@@ -10,6 +10,8 @@ public:
 	void Update(const WorldTransform& worldTransform);
 	void Draw(const ViewProjection& viewProjection);
 
+	void ExplosionFlagTrue();
+
 	static const int Max = 10;
 private:
 	Input* input_;
