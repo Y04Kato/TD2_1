@@ -42,6 +42,7 @@ void Unit::ShortInitialize() {
 	isLive_ = true;
 	respawnCoolTime = 0;
 	phase_ = Phase::Next;
+	material = {1.0f,0.0f,0.0f,1.0f};
 }
 
 void Unit::Update() {
