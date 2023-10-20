@@ -3,7 +3,7 @@
 #include <string.h>
 #include <algorithm>
 #include "components/input/Input.h"
-
+#include "ScoreManager.h"
 MapManager* MapManager::GetInstance()
 {
 	static MapManager instance;
@@ -147,9 +147,11 @@ void MapManager::FindChain()
 		for (int x = 0; x < kMapWidth; x++) {
 			if (map[y][x].mapstate == MapState::Block) {
 				map[y][x].mapstate = MapState::None;
+				ScoreManager::GetInstance()->BreakBlock();
 			}
 			if (map[y][x].mapstate == MapState::Bomb) {
 				map[y][x].mapstate = MapState::UnChaindBomb;
+				ScoreManager::GetInstance()->ExplodeBomb();
 				for (int i = 0; i < kBombMax; i++) {
 					if (map[y][x].mapstate == MapState::UnChaindBomb) {
 						if (map[y][x].worldTransform.translation_.num[0] == explosion_[i]->GetworldTransform().translation_.num[0]) {
@@ -263,6 +265,7 @@ void MapManager::BreakBlock(const VectorInt2& position) {
 		map[clampdPos.y][clampdPos.x + 1].left = false;
 
 		map[position.y][position.x].mapstate = MapState::None;
+		ScoreManager::GetInstance()->BreakBlock();
 		FindChain();
 	}
 }

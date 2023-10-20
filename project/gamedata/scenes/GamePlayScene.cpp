@@ -1,6 +1,7 @@
 #include "GamePlayScene.h"
 #include "components/utilities/globalVariables/GlobalVariables.h"
 #include "../MapManager.h"
+#include "../ScoreManager.h"
 
 void GamePlayScene::Initialize() {
 	CJEngine_ = CitrusJunosEngine::GetInstance();
@@ -105,6 +106,9 @@ void GamePlayScene::Initialize() {
 	//Unit
 	unit_.reset(new Unit());
 	unit_->Initialize();
+
+	//Score
+	ScoreManager::GetInstance()->Initialize();
 }
 
 void GamePlayScene::Update() {
@@ -129,6 +133,7 @@ void GamePlayScene::Update() {
 		MapManager::GetInstance()->ShortInitialize();
 		player_->ShortInitialize();
 		unit_->ShortInitialize();
+		ScoreManager::GetInstance()->Initialize();
 	}
 
 	for (int i = 0; i < 2; i++) {
@@ -232,10 +237,16 @@ void GamePlayScene::Update() {
 
 	ImGui::End();
 #endif
-
+	ScoreManager::GetInstance()->FrameStart();
 	MapManager::GetInstance()->Update();
 	unit_->Update();
 	player_->Update();
+	ScoreManager::GetInstance()->ScoreConfirm();
+#ifdef _DEBUG
+	ImGui::Begin("Score");
+	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
+	ImGui::End();
+#endif // _DEBUG
 }
 
 void GamePlayScene::Draw() {
