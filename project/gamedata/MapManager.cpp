@@ -232,6 +232,7 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 					}
 				}
 				if (map[y][x].mapstate == MapState::Core) {
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Bomb) {
