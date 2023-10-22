@@ -26,7 +26,7 @@ void MapManager::Initialize() {
 	
 	modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
 	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
-	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
+	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 }
@@ -236,10 +236,12 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Bomb) {
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 					modelBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::UnChaindBomb) {
-					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.3f,0.3f,0.3f,1.0f }, directionalLight_);
 					for (int i = 0; i < kBombMax; i++) {
 						if (map[y][x].worldTransform.translation_.num[0] == explosion_[i]->GetworldTransform().translation_.num[0]) {
 							if (map[y][x].worldTransform.translation_.num[2] == explosion_[i]->GetworldTransform().translation_.num[2]) {

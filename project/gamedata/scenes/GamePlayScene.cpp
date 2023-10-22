@@ -55,6 +55,12 @@ void GamePlayScene::Initialize() {
 	model_->Initialize("project/gamedata/resources/block", "block.obj");
 	worldTransformModel_.Initialize();
 	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
+
+	//BackGround
+	backGround_.reset(Model::CreateModelFromObj("project/gamedata/resources/BG", "BG.obj"));
+	worldTransformBackGround_.Initialize();
+	worldTransformBackGround_.translation_ = { 17.3f,-25.8f,-4.6f };
+	worldTransformBackGround_.scale_ = { 58.0f,1.0f,38.5f };
 #endif
 
 	//ライト
@@ -241,7 +247,16 @@ void GamePlayScene::Update() {
 	MapManager::GetInstance()->Update();
 	unit_->Update();
 	player_->Update();
+	worldTransformBackGround_.UpdateMatrix();
 	ScoreManager::GetInstance()->ScoreConfirm();
+
+	ImGui::Begin("test1");
+	ImGui::DragFloat3("Translate", worldTransformBackGround_.translation_.num, 0.05f);
+	ImGui::DragFloat3("Rotate", worldTransformBackGround_.rotation_.num, 0.05f);
+	ImGui::DragFloat3("Scale", worldTransformBackGround_.scale_.num, 0.05f);
+	ImGui::End();
+
+
 #ifdef _DEBUG
 	ImGui::Begin("Score");
 	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
@@ -270,6 +285,7 @@ void GamePlayScene::Draw() {
 	}
 #endif
 
+	backGround_->Draw(worldTransformBackGround_,viewProjection_,Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	MapManager::GetInstance()->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	unit_->Draw(viewProjection_);

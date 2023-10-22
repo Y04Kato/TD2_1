@@ -75,4 +75,7 @@ private:
 	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<Unit> unit_;
+
+	std::unique_ptr<Model> backGround_;
+	WorldTransform worldTransformBackGround_;
 };
