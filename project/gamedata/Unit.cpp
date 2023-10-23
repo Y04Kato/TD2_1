@@ -4,7 +4,7 @@
 void (Unit::* Unit::phaseTable[])() = { &Unit::Next,&Unit::Move, &Unit::Create };
 
 void Unit::Initialize() {
-	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj"));
+	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/Unit", "Unit.obj"));
 	worldTransform_.Initialize();
 	targetWorldTransform_.Initialize();
 	nowWorldTransform_.Initialize();

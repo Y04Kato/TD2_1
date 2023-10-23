@@ -55,13 +55,13 @@ void GamePlayScene::Initialize() {
 	model_->Initialize("project/gamedata/resources/block", "block.obj");
 	worldTransformModel_.Initialize();
 	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
+#endif
 
 	//BackGround
 	backGround_.reset(Model::CreateModelFromObj("project/gamedata/resources/BG", "BG.obj"));
 	worldTransformBackGround_.Initialize();
 	worldTransformBackGround_.translation_ = { 17.3f,-25.8f,-4.6f };
 	worldTransformBackGround_.scale_ = { 58.0f,1.0f,38.5f };
-#endif
 
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
@@ -249,13 +249,6 @@ void GamePlayScene::Update() {
 	player_->Update();
 	worldTransformBackGround_.UpdateMatrix();
 	ScoreManager::GetInstance()->ScoreConfirm();
-
-	ImGui::Begin("test1");
-	ImGui::DragFloat3("Translate", worldTransformBackGround_.translation_.num, 0.05f);
-	ImGui::DragFloat3("Rotate", worldTransformBackGround_.rotation_.num, 0.05f);
-	ImGui::DragFloat3("Scale", worldTransformBackGround_.scale_.num, 0.05f);
-	ImGui::End();
-
 
 #ifdef _DEBUG
 	ImGui::Begin("Score");
