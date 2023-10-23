@@ -2,7 +2,7 @@
 #include "components/utilities/globalVariables/GlobalVariables.h"
 #include "../MapManager.h"
 #include "../ScoreManager.h"
-
+#include "gamedata/Fade.h"
 void GamePlayScene::Initialize() {
 	CJEngine_ = CitrusJunosEngine::GetInstance();
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -113,6 +113,8 @@ void GamePlayScene::Initialize() {
 
 	//終了タイマー
 	gameEndTimer_ = 600;
+
+	isSceneChange_ = false;
 }
 
 void GamePlayScene::Update() {
@@ -242,15 +244,19 @@ void GamePlayScene::Update() {
 	ImGui::End();*/
 #endif
 	if (!inGame_) {
-		inGame_ = true;
+		//inGame_ = true;
 		MapManager::GetInstance()->ShortInitialize();
 		player_->ShortInitialize();
 		unit_->ShortInitialize();
 		ScoreManager::GetInstance()->Initialize();
 		//仮
 		gameEndTimer_ = 600;
+		if (!Fade::GetInstance()->IsFade()) {
+			Fade::GetInstance()->FadeOut();
+			inGame_ = true;
+		}
 	}
-	if (inGame_) {
+	if (inGame_ && !Fade::GetInstance()->IsFade()) {
 		ScoreManager::GetInstance()->FrameStart();
 		MapManager::GetInstance()->Update();
 		unit_->Update();
@@ -258,10 +264,20 @@ void GamePlayScene::Update() {
 		ScoreManager::GetInstance()->ScoreConfirm();
 		gameEndTimer_--;
 		if (gameEndTimer_<=0) {
-			inGame_ = false;
-			sceneNo = 0;
+			if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
+				inGame_ = false;
+				sceneNo = 0;
+				isSceneChange_ = false;
+			}
+			if (!Fade::GetInstance()->IsFade() && Fade::GetInstance()->IsFadeEnd()) {
+				Fade::GetInstance()->FadeIn();
+				isSceneChange_ = true;
+			}
+			
+			//sceneNo = 0;
 		}
 	}
+	Fade::GetInstance()->Update();
 #ifdef _DEBUG
 	ImGui::Begin("Score");
 	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
@@ -298,6 +314,7 @@ void GamePlayScene::Draw() {
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
 
+	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {
 		for (int i = 0; i < 1; i++) {//Sprite描画

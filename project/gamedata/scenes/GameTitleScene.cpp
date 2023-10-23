@@ -1,5 +1,6 @@
 #include"GameTitleScene.h"
 #include "../MapManager.h"
+#include "gamedata/Fade.h"
 void GameTitleScene::Initialize(){
 	//CJEngine
 	CJEngine_ = CitrusJunosEngine::GetInstance();
@@ -22,13 +23,31 @@ void GameTitleScene::Initialize(){
 	//Unit
 	unit_.reset(new Unit());
 	unit_->Initialize();
+	Fade::GetInstance()->Initialize();
+	isSceneChange_ = false;
 }
 
 void GameTitleScene::Update(){
-	if (input_->PressKey(DIK_N)) {
-		sceneNo = 1;
+	if (input_->PressKey(DIK_N) && !isSceneChange_) {
+		//sceneNo = 1;
+		if (!Fade::GetInstance()->IsFade()) {
+			Fade::GetInstance()->FadeIn();
+			isSceneChange_ = true;
+		}
 	}
 
+	if (!isSceneChange_) {
+		if (!Fade::GetInstance()->IsFade() && !
+			Fade::GetInstance()->IsFadeEnd()) {
+			Fade::GetInstance()->FadeOut();
+		}
+	}
+
+	//遷移フラグが立ってフェードアニメーションが終わったら
+	if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
+		isSceneChange_ = false;
+		sceneNo = 1;
+	}
 	ImGui::Begin("debug");
 	ImGui::Text("GameTitleScene");
 	ImGui::Text("nextScene:pressKey N");
@@ -36,6 +55,7 @@ void GameTitleScene::Update(){
 
 	MapManager::GetInstance()->Update();
 	unit_->Update();
+	Fade::GetInstance()->Update();
 }
 
 void GameTitleScene::Draw(){
@@ -44,6 +64,12 @@ void GameTitleScene::Draw(){
 	MapManager::GetInstance()->Draw(viewProjection_);
 	//player_->Draw(viewProjection_);
 	unit_->Draw(viewProjection_);
+#pragma endregion
+
+#pragma region 前景スプライト描画
+	CJEngine_->PreDraw2D();
+
+	Fade::GetInstance()->Draw();
 #pragma endregion
 }
 

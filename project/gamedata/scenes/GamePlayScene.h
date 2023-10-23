@@ -82,4 +82,7 @@ private:
 
 	//終了タイマー
 	int gameEndTimer_;
+
+	//シーンチェンジフラグ
+	bool isSceneChange_ = false;
 };

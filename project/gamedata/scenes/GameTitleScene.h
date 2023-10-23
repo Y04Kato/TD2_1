@@ -20,4 +20,6 @@ private:
 	DebugCamera* debugCamera_;
 
 	std::unique_ptr<Unit> unit_;
+
+	bool isSceneChange_ = false;
 };

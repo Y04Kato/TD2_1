@@ -116,6 +116,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion2.cpp" />
+    <ClCompile Include="project\gamedata\Fade.cpp" />
     <ClCompile Include="project\gamedata\MapManager.cpp" />
     <ClCompile Include="project\gamedata\Player.cpp" />
     <ClCompile Include="project\gamedata\scenes\GameClearScene.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="project\gamedata\explosion\explosion.h" />
     <ClInclude Include="project\gamedata\explosion\explosion2.h" />
+    <ClInclude Include="project\gamedata\Fade.h" />
     <ClInclude Include="project\gamedata\MapManager.h" />
     <ClInclude Include="project\gamedata\Player.h" />
     <ClInclude Include="project\gamedata\scenes\GameClearScene.h" />
