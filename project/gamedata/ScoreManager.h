@@ -56,8 +56,8 @@ private:
 
 
 	//kaisiiti
-	const int32_t kScoreLeft =500;
-	const int32_t kScoreTop=100;
+	const int32_t kScoreLeft =900;
+	const int32_t kScoreTop=30;
 
 	//一桁ごとのサイズ
 	const int32_t kScoreWidth = 64;
