@@ -97,6 +97,7 @@ void CreateSprite::SettingColor() {
 	materialResource_ = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(Material));
 
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialData_->uvTransform = MakeIdentity4x4();
 }
 
 void CreateSprite::SettingTransform(){
