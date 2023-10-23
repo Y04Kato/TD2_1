@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "components/input/Input.h"
 #include "ScoreManager.h"
+bool MapManager::isLoad_ = false;
 MapManager* MapManager::GetInstance()
 {
 	static MapManager instance;
@@ -11,24 +12,30 @@ MapManager* MapManager::GetInstance()
 }
 
 void MapManager::Initialize() {
-	bombs_.clear();
-	for (int i = 0; i < kBombMax; i++) {
-		explosion_[i] = new Explosion2();
-		explosion_[i]->Initialize();
-	}
+	if (!isLoad_) {
+		bombs_.clear();
+		for (int i = 0; i < kBombMax; i++) {
+			explosion_[i] = new Explosion2();
+			explosion_[i]->Initialize();
+		}
 
-	MapRead();
-	modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadBase", "RoadBase.obj"));
-	modelTop_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadDown", "RoadDown.obj"));
-	modelDown_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadTop", "RoadTop.obj"));
-	modelLeft_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadRight", "RoadRight.obj"));
-	modelRight_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadLeft", "RoadLeft.obj"));
-	
-	modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
-	modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
-	modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
-	//ライト
-	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
+		MapRead();
+		modelBlock.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadBase", "RoadBase.obj"));
+		modelTop_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadDown", "RoadDown.obj"));
+		modelDown_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadTop", "RoadTop.obj"));
+		modelLeft_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadRight", "RoadRight.obj"));
+		modelRight_.reset(Model::CreateModelFromObj("project/gamedata/resources/RoadLeft", "RoadLeft.obj"));
+
+		modelCore.reset(Model::CreateModelFromObj("project/gamedata/resources/core", "Core.obj"));
+		modelBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/bomb", "Bomb.obj"));
+		modelUnChaindBomb.reset(Model::CreateModelFromObj("project/gamedata/resources/unChaindBomb", "UnChaindBomb.obj"));
+		//ライト
+		directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
+		isLoad_ = true;
+	}
+	else {
+		ShortInitialize();
+	}
 }
 
 void MapManager::ShortInitialize() {

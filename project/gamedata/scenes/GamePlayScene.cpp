@@ -109,6 +109,10 @@ void GamePlayScene::Initialize() {
 
 	//Score
 	ScoreManager::GetInstance()->Initialize();
+	inGame_ = false;
+
+	//終了タイマー
+	gameEndTimer_ = 600;
 }
 
 void GamePlayScene::Update() {
@@ -141,7 +145,7 @@ void GamePlayScene::Update() {
 	}
 	worldTransformSphere_.UpdateMatrix();
 	worldTransformModel_.UpdateMatrix();
-
+	/*
 	ImGui::Begin("debug");
 	ImGui::Text("GamePlayScene");
 	if (ImGui::TreeNode("Triangle")) {//三角形
@@ -235,13 +239,29 @@ void GamePlayScene::Update() {
 
 	ImGui::Text("%f", ImGui::GetIO().Framerate);
 
-	ImGui::End();
+	ImGui::End();*/
 #endif
-	ScoreManager::GetInstance()->FrameStart();
-	MapManager::GetInstance()->Update();
-	unit_->Update();
-	player_->Update();
-	ScoreManager::GetInstance()->ScoreConfirm();
+	if (!inGame_) {
+		inGame_ = true;
+		MapManager::GetInstance()->ShortInitialize();
+		player_->ShortInitialize();
+		unit_->ShortInitialize();
+		ScoreManager::GetInstance()->Initialize();
+		//仮
+		gameEndTimer_ = 600;
+	}
+	if (inGame_) {
+		ScoreManager::GetInstance()->FrameStart();
+		MapManager::GetInstance()->Update();
+		unit_->Update();
+		player_->Update();
+		ScoreManager::GetInstance()->ScoreConfirm();
+		gameEndTimer_--;
+		if (gameEndTimer_<=0) {
+			inGame_ = false;
+			sceneNo = 0;
+		}
+	}
 #ifdef _DEBUG
 	ImGui::Begin("Score");
 	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
