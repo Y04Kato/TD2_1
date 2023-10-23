@@ -9,6 +9,22 @@ ScoreManager* ScoreManager::GetInstance()
 void ScoreManager::Initialize() {
 	score_ = 0;
 	frameScore_ = 0;
+	numberTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/verticalNumbers.png");
+	for (int index = 0; index < kScoreDigits;index++) {
+		scoreSprites_[index].reset(new CreateSprite());
+
+		Vector4 leftTop = { float( kScoreLeft + (index * (kScoreSpace + kScoreWidth))),float(kScoreTop),0.0f,1.0f };
+		Vector4 rightBottom = {float(kScoreLeft + kScoreWidth + (index * (kScoreSpace + kScoreWidth))),float(kScoreTop+kScoreHeight),0.0f,1.0f };
+		scoreSprites_[index]->Initialize(leftTop,rightBottom);
+	}
+}
+
+void ScoreManager::Draw() {
+	Transform transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform uv = { {1.0f,1.0f/10.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	for (int index = 0; index < kScoreDigits; index++) {
+		scoreSprites_[index]->Draw(transform, uv, {1.0f,1.0f,1.0f,1.0f},numberTextureHandle_);
+	}
 }
 
 void ScoreManager::FrameStart() {

@@ -147,7 +147,7 @@ void GamePlayScene::Update() {
 	}
 	worldTransformSphere_.UpdateMatrix();
 	worldTransformModel_.UpdateMatrix();
-	/*
+	
 	ImGui::Begin("debug");
 	ImGui::Text("GamePlayScene");
 	if (ImGui::TreeNode("Triangle")) {//三角形
@@ -241,7 +241,7 @@ void GamePlayScene::Update() {
 
 	ImGui::Text("%f", ImGui::GetIO().Framerate);
 
-	ImGui::End();*/
+	ImGui::End();
 #endif
 	if (!inGame_) {
 		//inGame_ = true;
@@ -263,7 +263,7 @@ void GamePlayScene::Update() {
 		player_->Update();
 		ScoreManager::GetInstance()->ScoreConfirm();
 		gameEndTimer_--;
-		if (gameEndTimer_<=0) {
+		/*if (gameEndTimer_ <= 0) {
 			if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
 				inGame_ = false;
 				sceneNo = 0;
@@ -275,7 +275,7 @@ void GamePlayScene::Update() {
 			}
 			
 			//sceneNo = 0;
-		}
+		}*/
 	}
 	Fade::GetInstance()->Update();
 #ifdef _DEBUG
@@ -313,7 +313,7 @@ void GamePlayScene::Draw() {
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
-
+	ScoreManager::GetInstance()->Draw();
 	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {

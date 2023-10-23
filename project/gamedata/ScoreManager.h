@@ -5,7 +5,8 @@
 #include "VectorInt.h"
 #include <memory>
 #include "components/manager/TextureManager.h"
-#include "components/3d/Model.h"
+#include "components/2d/CreateSprite.h"
+//#include "components/3d/Model.h"
 
 class ScoreManager {
 public:
@@ -14,6 +15,9 @@ public:
 	void Initialize();
 	//ロード時間短縮用
 	//void ShortInitialize();
+
+	void Draw();
+
 
 	//ループの頭で呼ぶ
 	void FrameStart();
@@ -32,20 +36,36 @@ public:
 	//ボムを巻き込んだ時の増加倍率
 	const float kBombRatio = 0.5f;
 
-	int GetScore() { return score_; };
+	int32_t GetScore() const { return score_; };
 private:
 	ScoreManager() = default;
 	~ScoreManager() = default;
 	ScoreManager(const ScoreManager&) = delete;
 	ScoreManager& operator=(const ScoreManager&) = delete;
 
-	int score_;
+	int32_t score_;
 	//フレームのスコア
-	int frameScore_;
+	int32_t frameScore_;
 	//フレームの壊したブロック数
-	int blockNum_;
+	int32_t blockNum_;
 	//フレームの爆発させた数
-	int bombNum_;
+	int32_t bombNum_;
 
+	//スコア桁数
+	static const int32_t kScoreDigits = 5;
+
+
+	//kaisiiti
+	const int32_t kScoreLeft =500;
+	const int32_t kScoreTop=100;
+
+	//一桁ごとのサイズ
+	const int32_t kScoreWidth = 64;
+	const int32_t kScoreHeight = 64;
+	//桁ごとの空間
+	const int32_t kScoreSpace = 16;
+
+	std::array<std::unique_ptr<CreateSprite>, kScoreDigits> scoreSprites_;
 	//std::list<std::function<ScoreManager>> scoreCommandList_;
+	uint32_t numberTextureHandle_ = 0;
 };
