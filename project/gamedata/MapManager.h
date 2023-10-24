@@ -62,6 +62,7 @@ public:
 	void Protect(int x, int y);
 
 	static Vector3 GetworldPosition(VectorInt2 vector);
+	static WorldTransform& GetWorldTransform(VectorInt2 vector);
 	static Vector3 GetCenterworldPosition();
 
 	void BreakBlock(const VectorInt2& position);

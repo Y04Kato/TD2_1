@@ -213,6 +213,7 @@ void MapManager::Protect(int x, int y) {
 }
 
 Vector3 MapManager::GetworldPosition(VectorInt2 vector) { return GetInstance()->map[vector.y][vector.x].worldTransform.translation_; }
+WorldTransform& MapManager::GetWorldTransform(VectorInt2 vector) { return GetInstance()->map[vector.y][vector.x].worldTransform; };
 Vector3 MapManager::GetCenterworldPosition() {
 	return GetInstance()->map[kMapHeight / 2][kMapWidth / 2].worldTransform.translation_;
 }

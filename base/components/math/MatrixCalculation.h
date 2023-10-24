@@ -57,3 +57,8 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
 //Vector3同士の足し算
 Vector3 Add(const Vector3& translation, const Vector3& move);
+
+//ビューポート変換行列
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minD, float maxD);
+
+Vector3 TransformN(const Vector3& v, const Matrix4x4& m);

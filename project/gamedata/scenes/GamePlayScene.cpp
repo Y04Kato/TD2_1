@@ -126,6 +126,9 @@ void GamePlayScene::Initialize() {
 	timer_->Initialize();
 	timer_->SetNowTime(gameEndTimer_ / 60);
 	timer_->SetInitialTime(kPlayTime / 60);
+
+	target_.reset(new Target);
+	target_->Initialize();
 }
 
 void GamePlayScene::Update() {
@@ -290,7 +293,8 @@ void GamePlayScene::Update() {
 			//sceneNo = 0;
 		}*/
 	}
-
+	target_->SetWorldTransform(MapManager::GetWorldTransform(MapManager::GetInstance()->GetPriority()), viewProjection_);
+	target_->Update();
 	worldTransformBackGround_.UpdateMatrix();
 	Fade::GetInstance()->Update();
 
@@ -330,6 +334,9 @@ void GamePlayScene::Draw() {
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
+	if (inGame_) {
+		target_->Draw();
+	}
 	ScoreManager::GetInstance()->Draw();
 	timer_->Draw();
 	Fade::GetInstance()->Draw();

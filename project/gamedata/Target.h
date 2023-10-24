@@ -8,6 +8,18 @@
 #include "components/2d/CreateSprite.h"
 class Target {
 public:
-	void SetWorldTransform();
+	void Initialize();
+	void Update();
+	void SetWorldTransform(const WorldTransform& worldTransform,const ViewProjection& viewProjection);
+	void Draw();
 private:
+	//画面上の座標
+	VectorInt2 position_;
+	VectorInt2 offset_;
+	//画像幅
+	const int32_t kWidth = 64;
+	const int32_t kHeight = 64;
+
+	std::unique_ptr<CreateSprite> sprite_;
+	uint32_t textureHandle_ = 0;
 };

@@ -444,3 +444,35 @@ Vector3 Add(const Vector3& translation, const Vector3& move) {
 	result.num[2] = translation.num[2] + move.num[2];
 	return result;
 }
+
+//ビューポート変換行列
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minD, float maxD)
+{
+	Matrix4x4 matrix = MakeIdentity4x4();
+	matrix.m[0][0] = width / 2.0f;
+	matrix.m[1][1] = -height / 2.0f;
+	matrix.m[2][2] = maxD - minD;
+	matrix.m[3][0] = left + width / 2.0f;
+	matrix.m[3][1] = top + height / 2.0f;
+	matrix.m[3][2] = minD;
+
+	return matrix;
+}
+
+Vector3 TransformN(const Vector3& v, const Matrix4x4& m) {
+	Vector3 result;
+	float transformMatrix[4];
+	float matrix4[4] = { v.num[0],v.num[1],v.num[2] ,1.0f };
+	for (int column = 0; column < 4; column++) {
+		transformMatrix[column] = 0.0f;
+		for (int i = 0; i < 4; i++) {
+			transformMatrix[column] += matrix4[i] * m.m[i][column];
+		}
+	}
+	float w = transformMatrix[3];
+	assert(w != 0.0f);
+	result.num[0] = transformMatrix[0] / w;
+	result.num[1] = transformMatrix[1] / w;
+	result.num[2] = transformMatrix[2] / w;
+	return result;
+}
