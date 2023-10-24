@@ -15,6 +15,7 @@
 
 #include "gamedata/Player.h"
 #include "gamedata/Unit.h"
+#include "gamedata/Timer.h"
 
 class GamePlayScene :public Iscene {
 public:
@@ -78,4 +79,18 @@ private:
 
 	std::unique_ptr<Model> backGround_;
 	WorldTransform worldTransformBackGround_;
+
+	//タイマー描画
+	std::unique_ptr<Timer> timer_;
+
+	//プレイ中か
+	bool inGame_ = false;
+
+	//プレイ時間初期値(フレーム)
+	int kPlayTime = 60 * 60;
+	//終了タイマー
+	int gameEndTimer_;
+
+	//シーンチェンジフラグ
+	bool isSceneChange_ = false;
 };

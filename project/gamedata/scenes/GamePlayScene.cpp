@@ -2,6 +2,7 @@
 #include "components/utilities/globalVariables/GlobalVariables.h"
 #include "../MapManager.h"
 #include "../ScoreManager.h"
+#include "gamedata/Fade.h"
 
 void GamePlayScene::Initialize() {
 	CJEngine_ = CitrusJunosEngine::GetInstance();
@@ -115,6 +116,16 @@ void GamePlayScene::Initialize() {
 
 	//Score
 	ScoreManager::GetInstance()->Initialize();
+	inGame_ = false;
+
+	//終了タイマー
+	gameEndTimer_ = kPlayTime;
+
+	isSceneChange_ = false;
+	timer_.reset(new Timer);
+	timer_->Initialize();
+	timer_->SetNowTime(gameEndTimer_ / 60);
+	timer_->SetInitialTime(kPlayTime / 60);
 }
 
 void GamePlayScene::Update() {
@@ -243,12 +254,45 @@ void GamePlayScene::Update() {
 
 	ImGui::End();
 #endif
-	ScoreManager::GetInstance()->FrameStart();
-	MapManager::GetInstance()->Update();
-	unit_->Update();
-	player_->Update();
+	if (!inGame_) {
+		//inGame_ = true;
+		MapManager::GetInstance()->ShortInitialize();
+		player_->ShortInitialize();
+		unit_->ShortInitialize();
+		ScoreManager::GetInstance()->Initialize();
+		//仮
+		gameEndTimer_ = kPlayTime;
+		timer_->SetNowTime(gameEndTimer_ / 60);
+		if (!Fade::GetInstance()->IsFade()) {
+			Fade::GetInstance()->FadeOut();
+			inGame_ = true;
+		}
+	}
+	if (inGame_ && !Fade::GetInstance()->IsFade()) {
+		ScoreManager::GetInstance()->FrameStart();
+		MapManager::GetInstance()->Update();
+		unit_->Update();
+		player_->Update();
+		ScoreManager::GetInstance()->ScoreConfirm();
+		gameEndTimer_--;
+		timer_->SetNowTime(gameEndTimer_ / 60);
+		/*if (gameEndTimer_ <= 0) {
+			if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
+				inGame_ = false;
+				sceneNo = 0;
+				isSceneChange_ = false;
+			}
+			if (!Fade::GetInstance()->IsFade() && Fade::GetInstance()->IsFadeEnd()) {
+				Fade::GetInstance()->FadeIn();
+				isSceneChange_ = true;
+			}
+
+			//sceneNo = 0;
+		}*/
+	}
+
 	worldTransformBackGround_.UpdateMatrix();
-	ScoreManager::GetInstance()->ScoreConfirm();
+	Fade::GetInstance()->Update();
 
 #ifdef _DEBUG
 	ImGui::Begin("Score");
@@ -286,7 +330,9 @@ void GamePlayScene::Draw() {
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
-
+	ScoreManager::GetInstance()->Draw();
+	timer_->Draw();
+	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {
 		for (int i = 0; i < 1; i++) {//Sprite描画

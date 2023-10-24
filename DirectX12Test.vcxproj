@@ -61,6 +61,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,6 +81,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,6 +118,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion.cpp" />
     <ClCompile Include="project\gamedata\explosion\explosion2.cpp" />
+    <ClCompile Include="project\gamedata\Fade.cpp" />
     <ClCompile Include="project\gamedata\MapManager.cpp" />
     <ClCompile Include="project\gamedata\Player.cpp" />
     <ClCompile Include="project\gamedata\scenes\GameClearScene.cpp" />
@@ -125,6 +128,7 @@
     <ClCompile Include="base\components\utilities\collisionManager\CollisionManager.cpp" />
     <ClCompile Include="base\components\utilities\globalVariables\GlobalVariables.cpp" />
     <ClCompile Include="project\gamedata\ScoreManager.cpp" />
+    <ClCompile Include="project\gamedata\Timer.cpp" />
     <ClCompile Include="project\gamedata\Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +189,7 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="project\gamedata\explosion\explosion.h" />
     <ClInclude Include="project\gamedata\explosion\explosion2.h" />
+    <ClInclude Include="project\gamedata\Fade.h" />
     <ClInclude Include="project\gamedata\MapManager.h" />
     <ClInclude Include="project\gamedata\Player.h" />
     <ClInclude Include="project\gamedata\scenes\GameClearScene.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="base\components\utilities\collisionManager\CollisionManager.h" />
     <ClInclude Include="base\components\utilities\globalVariables\GlobalVariables.h" />
     <ClInclude Include="project\gamedata\ScoreManager.h" />
+    <ClInclude Include="project\gamedata\Timer.h" />
     <ClInclude Include="project\gamedata\Unit.h" />
     <ClInclude Include="project\gamedata\VectorInt.h" />
   </ItemGroup>

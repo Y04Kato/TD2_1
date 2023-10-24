@@ -78,6 +78,9 @@ public:
 
 	static const int kBombMax = 15;
 
+	//Initializeが呼び出されたことがあるかどうか(ロード済みのモデルの再ロード防止用)
+	static bool isLoad_;
+
 private:
 	MapManager() = default;
 	~MapManager() = default;
