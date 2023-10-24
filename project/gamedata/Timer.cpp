@@ -19,11 +19,18 @@ void Timer::Draw() {
 	int32_t drawScore;
 	Transform transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform uv = { {1.0f,1.0f / 10.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Vector4 color{1.0f,1.0f,1.0f,1.0f};
+	if (time_ < initialTime_/2) {
+		color = { 0.8f,0.8f,0.0f,1.0f };
+	}
+	if (time_ <= 5) {
+		color = { 0.9f,0.0f,0.0f,1.0f };
+	}
 	timerSprite_->Draw(transform, transform, {1.0f,1.0f,1.0f,1.0f},timeTextureHandle_);
 	for (int index = 0; index < kDigits; index++) {
 		drawScore = time_ / int(std::pow(10, kDigits - index - 1));
 		drawScore %= 10;
 		uv.translate.num[1] = 0.1f * float(drawScore);
-		Sprites_[index]->Draw(transform, uv, { 1.0f,1.0f,1.0f,1.0f }, numberTextureHandle_);
+		Sprites_[index]->Draw(transform, uv, color, numberTextureHandle_);
 	}
 }

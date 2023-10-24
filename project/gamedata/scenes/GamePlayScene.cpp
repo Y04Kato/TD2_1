@@ -118,6 +118,7 @@ void GamePlayScene::Initialize() {
 	timer_.reset(new Timer);
 	timer_->Initialize();
 	timer_->SetNowTime(gameEndTimer_ /60);
+	timer_->SetInitialTime(kPlayTime/60);
 }
 
 void GamePlayScene::Update() {

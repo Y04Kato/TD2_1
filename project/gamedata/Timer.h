@@ -15,11 +15,12 @@ public:
 	void Draw();
 
 	void SetNowTime(int nowTime) { time_ = nowTime; };
-
+	void SetInitialTime(int initialtime) { initialTime_ = initialtime; };
 private:
 
 	int32_t time_;
-
+	//初期時間
+	int32_t initialTime_;
 	//スコア桁数
 	static const int32_t kDigits = 3;
 
