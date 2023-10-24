@@ -79,11 +79,13 @@ void Player::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("player");
 	ImGui::SliderInt("move", &moveEnd, 1, 120);
+	ImGui::SliderInt("break", &breakEnd, 1, 120);
 	ImGui::End();
 #endif
 }
 
 void Player::Idle() {
+	frameCount_ = 0;
 	//moveTarget_ = {0,0};
 	if (input_->TriggerKey(DIK_LEFT)) {
 		moveTarget_.x = -1;
@@ -134,24 +136,29 @@ void Player::Move() {
 		moveTarget_.x = -1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_RIGHT)) {
 		moveTarget_.x = 1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_UP)) {
 		moveTarget_.y = -1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_DOWN)) {
 		moveTarget_.y = 1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isBreak_ = true;
+		isMove_ = false;
 	}
 	float t = float(frameCount_) / float(moveEnd);
 	worldTransform_.translation_.num[0] =
@@ -172,33 +179,56 @@ void Player::Break() {
 		moveTarget_.x = -1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_RIGHT)) {
 		moveTarget_.x = 1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_UP)) {
 		moveTarget_.y = -1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	else if (input_->TriggerKey(DIK_DOWN)) {
 		moveTarget_.y = 1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isBreak_ = true;
+		isMove_ = false;
 	}
+	if (frameCount_==0) {
+		isBreakBlock_ = false;
+		if (MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::Block) {
+			isExplosion_ = true;
+			explosion_->ExplosionFlagTrue();
+			explosionTimer_ = 10;
+			isBreakBlock_ = true;
+		}
+		MapManager::GetInstance()->BreakBlock(mapPosition_);	
+	}
+	if (frameCount_ == breakEnd) {
+		phase_ = Phase::Idle;
+	}
+	float t = (float(frameCount_) / float(breakEnd) -0.5f) * 2.0f;
+	if (isBreakBlock_) {
+		worldTransformUp_.translation_.num[1] = -2.0f + 3.0f*(t * t);
+		worldTransformUp_.scale_.num[0] = 0.5f + (t * t *0.5f);
+		worldTransformUp_.scale_.num[2] = 0.5f + (t * t *0.5f);
 
-	if (MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::Block) {
-		isExplosion_ = true;
-		explosion_->ExplosionFlagTrue();
-		explosionTimer_ = 10;
+		worldTransformCursor_.scale_.num[0] = 1.5f + -(t * t*0.5f);
+		worldTransformCursor_.scale_.num[2] = 1.5f + -(t * t*0.5f);
 	}
-	MapManager::GetInstance()->BreakBlock(mapPosition_);
-	phase_ = Phase::Idle;
+	else {
+		worldTransformUp_.translation_.num[1] = 0.5f + (t * t*0.5f);
+	}
+	frameCount_++;
 }
 
 

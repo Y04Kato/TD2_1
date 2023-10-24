@@ -60,7 +60,13 @@ private:
 	WorldTransform worldTransformUp_;
 	WorldTransform worldTransformCursor_;
 
+	//破壊アニメーションの終了フレーム
+	int breakEnd = 10;
+
 	//先行入力用
 	bool isMove_ = false;
 	bool isBreak_ = false;
+
+	//アニメーションの分岐用
+	bool isBreakBlock_ = false;
 };
