@@ -32,6 +32,8 @@ public:
 private:
 	Input* input_ = nullptr;
 	std::unique_ptr<Model> model_;
+	std::unique_ptr<Model> modelUp_;
+
 	VectorInt2 mapPosition_;
 	VectorInt2 moveTarget_;
 	VectorInt2 nextPosition_;
@@ -54,5 +56,11 @@ private:
 	WorldTransform targetWorldTransform_;
 	WorldTransform nowWorldTransform_;
 
+	//矢印
+	WorldTransform worldTransformUp_;
+	WorldTransform worldTransformCursor_;
+
+	//先行入力用
 	bool isMove_ = false;
+	bool isBreak_ = false;
 };

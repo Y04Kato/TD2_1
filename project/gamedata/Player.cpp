@@ -26,6 +26,14 @@ void Player::Initialize() {
 	isExplosion_ = false;
 
 	debugCamera_ = DebugCamera::GetInstance();
+
+	//矢印
+	modelUp_.reset(Model::CreateModelFromObj("project/gamedata/resources/PlayerUp", "PlayerUp.obj"));
+	worldTransformUp_.Initialize();
+	worldTransformUp_.parent_ = &worldTransform_;
+
+	worldTransformCursor_.Initialize();
+	worldTransformCursor_.parent_ = &worldTransform_;
 }
 
 void Player::ShortInitialize() {
@@ -35,6 +43,7 @@ void Player::ShortInitialize() {
 	mapPosition_.y--;
 	frameCount_ = 0;
 	isMove_ = false;
+	isBreak_ = false;
 	worldTransform_.translation_ = MapManager::GetInstance()->GetworldPosition(mapPosition_);
 	worldTransform_.translation_.num[1] = 2.0f;
 	worldTransform_.UpdateMatrix();
@@ -65,6 +74,8 @@ void Player::Update() {
 	worldTransform_.translation_.num[1] = 2.0f;
 	worldTransform_.UpdateMatrix();
 	worldTransformBreak_.UpdateMatrix();
+	worldTransformUp_.UpdateMatrix();
+	worldTransformCursor_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("player");
 	ImGui::SliderInt("move", &moveEnd, 1, 120);
@@ -111,9 +122,10 @@ void Player::Idle() {
 		nextPosition_ = moveTarget_;
 		moveTarget_ = { 0,0 };
 	}
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_SPACE) || isBreak_) {
 		worldTransformBreak_.translation_ = worldTransform_.translation_;
 		phase_ = Phase::Break;
+		isBreak_ = false;
 	}
 }
 
@@ -138,7 +150,9 @@ void Player::Move() {
 		moveTarget_.x = 0;
 		isMove_ = true;
 	}
-
+	if (input_->TriggerKey(DIK_SPACE)) {
+		isBreak_ = true;
+	}
 	float t = float(frameCount_) / float(moveEnd);
 	worldTransform_.translation_.num[0] =
 		(1.0f - t) * nowWorldTransform_.translation_.num[0] + t * targetWorldTransform_.translation_.num[0];
@@ -153,6 +167,31 @@ void Player::Move() {
 }
 
 void Player::Break() {
+	//先行入力受け付け
+	if (input_->TriggerKey(DIK_LEFT)) {
+		moveTarget_.x = -1;
+		moveTarget_.y = 0;
+		isMove_ = true;
+	}
+	else if (input_->TriggerKey(DIK_RIGHT)) {
+		moveTarget_.x = 1;
+		moveTarget_.y = 0;
+		isMove_ = true;
+	}
+	else if (input_->TriggerKey(DIK_UP)) {
+		moveTarget_.y = -1;
+		moveTarget_.x = 0;
+		isMove_ = true;
+	}
+	else if (input_->TriggerKey(DIK_DOWN)) {
+		moveTarget_.y = 1;
+		moveTarget_.x = 0;
+		isMove_ = true;
+	}
+	if (input_->TriggerKey(DIK_SPACE)) {
+		isBreak_ = true;
+	}
+
 	if (MapManager::GetInstance()->GetState(mapPosition_) == MapManager::MapState::Block) {
 		isExplosion_ = true;
 		explosion_->ExplosionFlagTrue();
@@ -164,6 +203,7 @@ void Player::Break() {
 
 
 void Player::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+	model_->Draw(worldTransformCursor_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+	modelUp_->Draw(worldTransformUp_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	explosion_->Draw(viewProjection);
 }

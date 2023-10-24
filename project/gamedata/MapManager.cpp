@@ -331,22 +331,26 @@ void MapManager::CreateBlock(const VectorInt2& position, Direction direction) {
 
 		if (map[position.y][position.x].mapstate == MapState::None) {
 			if (map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Block ||
-				map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Core) {
+				map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Core || 
+				map[clampdPos.y - 1][clampdPos.x].mapstate == MapState::Bomb) {
 				map[clampdPos.y - 1][clampdPos.x].down = true;
 				map[position.y][position.x].top = true;
 			}
 			if (map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Block ||
-				map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Core) {
+				map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Core || 
+				map[clampdPos.y + 1][clampdPos.x].mapstate == MapState::Bomb) {
 				map[clampdPos.y + 1][clampdPos.x].top = true;
 				map[position.y][position.x].down = true;
 			}
 			if (map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Block ||
-				map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Core) {
+				map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Core || 
+				map[clampdPos.y][clampdPos.x - 1].mapstate == MapState::Bomb) {
 				map[clampdPos.y][clampdPos.x - 1].right = true;
 				map[position.y][position.x].left = true;
 			}
 			if (map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Block ||
-				map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Core) {
+				map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Core || 
+				map[clampdPos.y][clampdPos.x + 1].mapstate == MapState::Bomb) {
 				map[clampdPos.y][clampdPos.x + 1].left = true;
 				map[position.y][position.x].right = true;
 			}
