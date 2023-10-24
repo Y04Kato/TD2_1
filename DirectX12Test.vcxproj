@@ -128,6 +128,7 @@
     <ClCompile Include="base\components\utilities\collisionManager\CollisionManager.cpp" />
     <ClCompile Include="base\components\utilities\globalVariables\GlobalVariables.cpp" />
     <ClCompile Include="project\gamedata\ScoreManager.cpp" />
+    <ClCompile Include="project\gamedata\Target.cpp" />
     <ClCompile Include="project\gamedata\Timer.cpp" />
     <ClCompile Include="project\gamedata\Unit.cpp" />
   </ItemGroup>
@@ -202,6 +203,7 @@
     <ClInclude Include="base\components\utilities\collisionManager\CollisionManager.h" />
     <ClInclude Include="base\components\utilities\globalVariables\GlobalVariables.h" />
     <ClInclude Include="project\gamedata\ScoreManager.h" />
+    <ClInclude Include="project\gamedata\Target.h" />
     <ClInclude Include="project\gamedata\Timer.h" />
     <ClInclude Include="project\gamedata\Unit.h" />
     <ClInclude Include="project\gamedata\VectorInt.h" />

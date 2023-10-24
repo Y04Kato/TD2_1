@@ -237,6 +237,9 @@
     <ClCompile Include="project\gamedata\Fade.cpp">
       <Filter>ソース ファイル\project\gamedata</Filter>
     </ClCompile>
+    <ClCompile Include="project\gamedata\Target.cpp">
+      <Filter>ソース ファイル\project\gamedata</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="project\gamedata\resources\shaders\Object3d.PS.hlsl">
@@ -380,6 +383,9 @@
       <Filter>ヘッダー ファイル\project\gamedata</Filter>
     </ClInclude>
     <ClInclude Include="project\gamedata\Fade.h">
+      <Filter>ヘッダー ファイル\project\gamedata</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gamedata\Target.h">
       <Filter>ヘッダー ファイル\project\gamedata</Filter>
     </ClInclude>
   </ItemGroup>
