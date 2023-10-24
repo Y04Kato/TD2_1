@@ -139,7 +139,7 @@ void Unit::Move() {
 
 void Unit::Create()
 {
-	audio_->SoundPlayWave(soundData1_);
+	audio_->SoundPlayWave(soundData1_, 0.1f);
 	MapManager::GetInstance()->CreateBlock(target_, direction_);
 	phase_ = Phase::Next;
 }

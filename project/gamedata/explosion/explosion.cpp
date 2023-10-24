@@ -67,7 +67,7 @@ void Explosion::Draw(const ViewProjection& viewProjection) {
 }
 
 void Explosion::ExplosionFlagTrue(){
-	audio_->SoundPlayWave(soundData1_);
+	audio_->SoundPlayWave(soundData1_,1.0f);
 	bounceSpeed_ = 1.2f;
 	time_ = 0.0f;
 	startFlag = true;
