@@ -22,5 +22,10 @@ private:
 
 	std::unique_ptr<Unit> unit_;
 
+	std::unique_ptr<Model> backGround_;
+	WorldTransform worldTransformBackGround_;
+
+	DirectionalLight directionalLight_;
+
 	bool isSceneChange_ = false;
 };

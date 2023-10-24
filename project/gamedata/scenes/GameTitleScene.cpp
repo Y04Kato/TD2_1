@@ -25,6 +25,15 @@ void GameTitleScene::Initialize(){
 	unit_->Initialize();
 	Fade::GetInstance()->Initialize();
 	isSceneChange_ = false;
+
+	backGround_.reset(Model::CreateModelFromObj("project/gamedata/resources/BG", "BG.obj"));
+	worldTransformBackGround_.Initialize();
+	worldTransformBackGround_.translation_ = { 17.3f,-25.8f,-4.6f };
+	worldTransformBackGround_.scale_ = { 58.0f,1.0f,38.5f };
+
+	//ライト
+	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
+
 }
 
 void GameTitleScene::Update(){
@@ -58,11 +67,13 @@ void GameTitleScene::Update(){
 	MapManager::GetInstance()->Update();
 	unit_->Update();
 	Fade::GetInstance()->Update();
+	worldTransformBackGround_.UpdateMatrix();
 }
 
 void GameTitleScene::Draw(){
 #pragma region 3Dオブジェクト描画
 	CJEngine_->PreDraw3D();
+	backGround_->Draw(worldTransformBackGround_, viewProjection_, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	MapManager::GetInstance()->Draw(viewProjection_);
 	//player_->Draw(viewProjection_);
 	unit_->Draw(viewProjection_);

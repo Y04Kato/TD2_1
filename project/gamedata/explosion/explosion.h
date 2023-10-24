@@ -3,6 +3,7 @@
 #include "components/3d/WorldTransform.h"
 #include "components/3d/ViewProjection.h"
 #include "components/3d/Model.h"
+#include "components/audio/Audio.h"
 
 class Explosion {
 public:
@@ -27,4 +28,7 @@ private:
 	float time_ = 0.0f;
 	float bounceSpeed_ = 0.0f;
 	float acceleration_ = -0.1f;
+
+	Audio* audio_;
+	SoundData soundData1_;
 };

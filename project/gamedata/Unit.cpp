@@ -25,6 +25,10 @@ void Unit::Initialize() {
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
 	worldTransform_.UpdateMatrix();
+
+	audio_ = Audio::GetInstance();
+
+	soundData1_ = audio_->SoundLoadWave("project/gamedata/resources/Block.wav");
 }
 
 void Unit::ShortInitialize() {
@@ -135,6 +139,7 @@ void Unit::Move() {
 
 void Unit::Create()
 {
+	audio_->SoundPlayWave(soundData1_);
 	MapManager::GetInstance()->CreateBlock(target_, direction_);
 	phase_ = Phase::Next;
 }
