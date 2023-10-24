@@ -83,7 +83,8 @@ private:
 	//プレイ中か
 	bool inGame_ = false;
 
-
+	//プレイ時間初期値(フレーム)
+	int kPlayTime = 60 * 60;
 	//終了タイマー
 	int gameEndTimer_;
 

@@ -112,7 +112,7 @@ void GamePlayScene::Initialize() {
 	inGame_ = false;
 
 	//終了タイマー
-	gameEndTimer_ = 600;
+	gameEndTimer_ = kPlayTime;
 
 	isSceneChange_ = false;
 	timer_.reset(new Timer);
@@ -253,7 +253,7 @@ void GamePlayScene::Update() {
 		unit_->ShortInitialize();
 		ScoreManager::GetInstance()->Initialize();
 		//仮
-		gameEndTimer_ = 600;
+		gameEndTimer_ = kPlayTime;
 		timer_->SetNowTime(gameEndTimer_ / 60);
 		if (!Fade::GetInstance()->IsFade()) {
 			Fade::GetInstance()->FadeOut();
