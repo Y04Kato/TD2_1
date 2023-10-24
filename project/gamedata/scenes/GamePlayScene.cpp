@@ -115,6 +115,9 @@ void GamePlayScene::Initialize() {
 	gameEndTimer_ = 600;
 
 	isSceneChange_ = false;
+	timer_.reset(new Timer);
+	timer_->Initialize();
+	timer_->SetNowTime(gameEndTimer_ /60);
 }
 
 void GamePlayScene::Update() {
@@ -251,6 +254,7 @@ void GamePlayScene::Update() {
 		ScoreManager::GetInstance()->Initialize();
 		//仮
 		gameEndTimer_ = 600;
+		timer_->SetNowTime(gameEndTimer_ / 60);
 		if (!Fade::GetInstance()->IsFade()) {
 			Fade::GetInstance()->FadeOut();
 			inGame_ = true;
@@ -263,6 +267,7 @@ void GamePlayScene::Update() {
 		player_->Update();
 		ScoreManager::GetInstance()->ScoreConfirm();
 		gameEndTimer_--;
+		timer_->SetNowTime(gameEndTimer_ / 60);
 		/*if (gameEndTimer_ <= 0) {
 			if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
 				inGame_ = false;
@@ -314,6 +319,7 @@ void GamePlayScene::Draw() {
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
 	ScoreManager::GetInstance()->Draw();
+	timer_->Draw();
 	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {

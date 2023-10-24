@@ -15,6 +15,7 @@
 
 #include "gamedata/Player.h"
 #include "gamedata/Unit.h"
+#include "gamedata/Timer.h"
 
 class GamePlayScene :public Iscene {
 public:
@@ -75,6 +76,9 @@ private:
 	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<Unit> unit_;
+
+	//タイマー描画
+	std::unique_ptr<Timer> timer_;
 
 	//プレイ中か
 	bool inGame_ = false;
