@@ -1,6 +1,7 @@
 #include "Unit.h"
 #include <algorithm>
-
+#define _USE_MATH_DEFINES
+#include <math.h>
 void (Unit::* Unit::phaseTable[])() = { &Unit::Next,&Unit::Move, &Unit::Create };
 
 void Unit::Initialize() {
@@ -72,6 +73,19 @@ void Unit::Update() {
 			respawnCoolTime = kRespawnTime;
 		}
 		(this->*phaseTable[static_cast<size_t>(phase_)])();
+		//向きを進行方向に変える
+		if (direction_ == MapManager::Direction::Top) {
+			worldTransform_.rotation_.num[1] = 0.0f;
+		}
+		else if(direction_ == MapManager::Direction::Down){
+			worldTransform_.rotation_.num[1] = float(M_PI);
+		}
+		else if (direction_ == MapManager::Direction::Left) {
+			worldTransform_.rotation_.num[1] =  float(M_PI)/2.0f;
+		}
+		else if (direction_ == MapManager::Direction::Right) {
+			worldTransform_.rotation_.num[1] = - float(M_PI)/2.0f;
+		}
 	}
 	worldTransform_.UpdateMatrix();
 
