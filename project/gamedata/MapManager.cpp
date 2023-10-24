@@ -225,7 +225,7 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 			if (map[y][x].mapstate != MapState::None) {
 				if (map[y][x].mapstate == MapState::Block)
 				{
-					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.8f,0.8f,0.8f,1.0f }, directionalLight_);
 					if (map[y][x].top) {
 						modelTop_->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 					}
@@ -240,16 +240,16 @@ void MapManager::Draw(const ViewProjection& viewProjecttion)
 					}
 				}
 				if (map[y][x].mapstate == MapState::Core) {
-					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.8f,0.8f,0.8f,1.0f }, directionalLight_);
 					modelCore->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::Bomb) {
-					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
-					modelBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.8f,0.8f,0.8f,1.0f }, directionalLight_);
+					modelBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.8f,0.1f,0.1f,1.0f }, directionalLight_);
 				}
 				if (map[y][x].mapstate == MapState::UnChaindBomb) {
-					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
-					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.3f,0.3f,0.3f,1.0f }, directionalLight_);
+					modelBlock->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.8f,0.8f,0.8f,1.0f }, directionalLight_);
+					modelUnChaindBomb->Draw(map[y][x].worldTransform, viewProjecttion, Vector4{ 0.2f,0.2f,0.2f,1.0f }, directionalLight_);
 					for (int i = 0; i < kBombMax; i++) {
 						if (map[y][x].worldTransform.translation_.num[0] == explosion_[i]->GetworldTransform().translation_.num[0]) {
 							if (map[y][x].worldTransform.translation_.num[2] == explosion_[i]->GetworldTransform().translation_.num[2]) {
