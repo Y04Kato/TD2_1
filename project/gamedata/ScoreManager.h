@@ -61,7 +61,7 @@ private:
 	const int32_t kScoreWidth = 64;
 	const int32_t kScoreHeight = 64;
 	//桁ごとの空間
-	const int32_t kScoreSpace = 16;
+	const int32_t kScoreSpace = -16;
 
 	std::array<std::unique_ptr<CreateSprite>, kScoreDigits> scoreSprites_;
 	//std::list<std::function<ScoreManager>> scoreCommandList_;
