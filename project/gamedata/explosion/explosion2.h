@@ -3,6 +3,7 @@
 #include "components/3d/WorldTransform.h"
 #include "components/3d/ViewProjection.h"
 #include "components/3d/Model.h"
+#include "components/audio/Audio.h"
 
 class Explosion2 {
 public:
@@ -27,4 +28,7 @@ private:
 	bool isExplosion = false;
 
 	int explosionTimer = 0;
+
+	Audio* audio_;
+	SoundData soundData1_;
 };

@@ -79,12 +79,6 @@ void GamePlayScene::Initialize() {
 	//Audio
 	audio_ = Audio::GetInstance();
 
-#ifdef _DEBUG
-	soundData1_ = audio_->SoundLoadWave("project/gamedata/resources/fanfare.wav");
-	//音声再生
-	audio_->SoundPlayWave(soundData1_);
-#endif
-
 	// デバッグカメラの初期化
 	debugCamera_ = DebugCamera::GetInstance();
 	debugCamera_->initialize();

@@ -8,6 +8,10 @@ void Explosion2::Initialize() {
 	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
+
+	audio_ = Audio::GetInstance();
+
+	soundData1_ = audio_->SoundLoadWave("project/gamedata/resources/explosion2.wav");
 }
 
 void Explosion2::Update() {
@@ -41,6 +45,7 @@ void Explosion2::Draw(const ViewProjection& viewProjection) {
 }
 
 void Explosion2::ExplosionFlagTrue() {
+	audio_->SoundPlayWave(soundData1_, 0.5f);
 	isExplosion = true;
 }
 

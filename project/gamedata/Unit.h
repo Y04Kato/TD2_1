@@ -4,6 +4,7 @@
 #include "components/3d/WorldTransform.h"
 #include "components/3d/ViewProjection.h"
 #include "components/3d/Model.h"
+#include "components/audio/Audio.h"
 
 #include <memory>
 
@@ -52,4 +53,7 @@ private:
 	MapManager::Direction direction_;
 
 	Vector4 material;
+
+	Audio* audio_;
+	SoundData soundData1_;
 };
