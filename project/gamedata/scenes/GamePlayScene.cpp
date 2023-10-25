@@ -101,9 +101,10 @@ void GamePlayScene::Initialize() {
 	globalVariables->AddItem(groupName, "RT", RTTransform_.translate);
 	globalVariables->AddItem(groupName, "break", breakTransform_.translate);
 
+	
+#endif
 	XINPUT_STATE joyState;
 	isDrawController_ = Input::GetInstance()->GetJoystickState(0, joyState);
-#endif
 	//Map
 	MapManager::GetInstance()->Initialize();
 
