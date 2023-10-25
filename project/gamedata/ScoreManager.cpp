@@ -17,17 +17,26 @@ void ScoreManager::Initialize() {
 		Vector4 rightBottom = { float(kScoreLeft + kScoreWidth + (index * (kScoreSpace + kScoreWidth))),float(kScoreTop + kScoreHeight),0.0f,1.0f };
 		scoreSprites_[index]->Initialize(leftTop, rightBottom);
 	}
+
+	transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 }
 
 void ScoreManager::Draw() {
+#ifdef _DEBUG
+	ImGui::Begin("Score");
+	ImGui::DragFloat3("scale", transform_.scale.num, 1.0f);
+	ImGui::DragFloat3("rotate", transform_.rotate.num, 1.0f);
+	ImGui::DragFloat3("translate", transform_.translate.num, 1.0f);
+	ImGui::End();
+#endif // DEBUG
+
 	int32_t drawScore;
-	Transform transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform uv = { {1.0f,1.0f / 10.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	for (int index = 0; index < kScoreDigits; index++) {
 		drawScore = score_ / int(std::pow(10, kScoreDigits - index - 1));
 		drawScore %= 10;
 		uv.translate.num[1] = 0.1f * float(drawScore);
-		scoreSprites_[index]->Draw(transform, uv, { 1.0f,1.0f,1.0f,1.0f }, numberTextureHandle_);
+		scoreSprites_[index]->Draw(transform_, uv, { 1.0f,1.0f,1.0f,1.0f }, numberTextureHandle_);
 	}
 }
 

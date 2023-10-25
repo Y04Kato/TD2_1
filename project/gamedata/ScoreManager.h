@@ -35,6 +35,9 @@ public:
 	const float kBombRatio = 0.5f;
 
 	int GetScore() { return score_; };
+
+	void SetTransform(const Transform& transform) {transform_ = transform;}
+
 private:
 	ScoreManager() = default;
 	~ScoreManager() = default;
@@ -62,6 +65,8 @@ private:
 	const int32_t kScoreHeight = 64;
 	//桁ごとの空間
 	const int32_t kScoreSpace = -16;
+
+	Transform transform_;
 
 	std::array<std::unique_ptr<CreateSprite>, kScoreDigits> scoreSprites_;
 	//std::list<std::function<ScoreManager>> scoreCommandList_;
