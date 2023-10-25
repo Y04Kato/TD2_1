@@ -56,7 +56,7 @@ void ScoreManager::ExplodeBomb() {
 
 void ScoreManager::ScoreConfirm() {
 	float ratio = 1.0f + float(bombNum_) * kBombRatio;
-	frameScore_ = int(float(blockNum_) * ratio);
+	frameScore_ = int(float(blockNum_)*10 * ratio);
 	score_ += frameScore_;
 	score_ = std::clamp(score_, 0, 99999);
 }
