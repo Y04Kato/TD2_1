@@ -4,6 +4,7 @@
 #include "components/input/Input.h"
 #include "components/3d/ViewProjection.h"
 #include "components/debugcamera/DebugCamera.h"
+#include "components/3d/Model.h"
 
 class GameClearScene :public Iscene {
 public:
@@ -21,4 +22,10 @@ private:
 
 	bool isSceneChange_ = false;
 	bool inResult_ = false;
+
+	std::unique_ptr<Model> backGround_;
+	WorldTransform worldTransformBackGround_;
+
+	DirectionalLight directionalLight_;
+
 };
