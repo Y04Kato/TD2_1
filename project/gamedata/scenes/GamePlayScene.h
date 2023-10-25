@@ -140,7 +140,7 @@ private:
 	int32_t slideNum_;
 	Transform sliderTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{620.0f,360.0f,0.0f} };
 	std::unique_ptr<CreateSprite> slideSprite_;
-	std::array<uint32_t,size_t(kSlideNum)> slideTextureHandle_;
+	std::array<uint32_t,size_t(4)> slideTextureHandle_;
 
 	XINPUT_STATE preJoyState;
 

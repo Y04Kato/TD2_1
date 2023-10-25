@@ -169,6 +169,8 @@ void GamePlayScene::Initialize() {
 
 	slideTextureHandle_[0] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide1.png");
 	slideTextureHandle_[1] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide2.png");
+	slideTextureHandle_[2] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide3.png");
+	slideTextureHandle_[3] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide4.png");
 }
 
 void GamePlayScene::Update() {
@@ -430,7 +432,11 @@ void GamePlayScene::Draw() {
 
 	Fade::GetInstance()->Draw();
 	if (!inGame_ && isDrawtutorial_) {
-		slideSprite_->Draw(sliderTransform_, uv, color, slideTextureHandle_[slideNum_]);
+		int32_t num = slideNum_;
+		if (!isDrawController_) {
+			num += 2;
+		}
+		slideSprite_->Draw(sliderTransform_, uv, color, slideTextureHandle_[num]);
 	}
 #ifdef _DEBUG
 	if (isSpriteDraw_) {
