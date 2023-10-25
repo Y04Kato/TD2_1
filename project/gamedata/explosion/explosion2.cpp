@@ -21,7 +21,7 @@ void Explosion2::Update() {
 			worldTransform_.scale_.num[1] += 0.1f;
 			worldTransform_.scale_.num[2] += 0.1f;
 			worldTransform_.rotation_.num[1] += 0.1f;
-			modelMaterial_.num[3] -= 0.02f;
+			//modelMaterial_.num[3] -= 0.02f;
 		}
 	}
 	else {
