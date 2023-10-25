@@ -37,7 +37,7 @@ void GameTitleScene::Initialize(){
 }
 
 void GameTitleScene::Update(){
-	if (input_->PressKey(DIK_N) && !isSceneChange_) {
+	if (input_->PressKey(DIK_SPACE) && !isSceneChange_) {
 		//sceneNo = 1;
 		if (!Fade::GetInstance()->IsFade()) {
 			Fade::GetInstance()->FadeIn();
@@ -60,7 +60,7 @@ void GameTitleScene::Update(){
 #ifdef _DEBUG
 	ImGui::Begin("debug");
 	ImGui::Text("GameTitleScene");
-	ImGui::Text("nextScene:pressKey N");
+	ImGui::Text("nextScene:pressKey SPACE");
 	ImGui::End();
 #endif
 
