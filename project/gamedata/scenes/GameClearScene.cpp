@@ -18,6 +18,8 @@ void GameClearScene::Initialize() {
 }
 
 void GameClearScene::Update() {
+	XINPUT_STATE joyState;
+	bool isConnect = Input::GetInstance()->GetJoystickState(0, joyState);
 	if (!inResult_) {
 		if (!Fade::GetInstance()->IsFade()) {
 			Fade::GetInstance()->FadeOut();
@@ -31,7 +33,7 @@ void GameClearScene::Update() {
 			sceneNo = 0;
 			isSceneChange_ = false;
 		}
-		if (input_->PressKey(DIK_SPACE) && !isSceneChange_) {
+		if ((input_->PressKey(DIK_SPACE) || (isConnect && joyState.Gamepad.bRightTrigger != 0)) && !isSceneChange_) {
 			if (!Fade::GetInstance()->IsFade() && Fade::GetInstance()->IsFadeEnd()) {
 				Fade::GetInstance()->FadeIn();
 				isSceneChange_ = true;

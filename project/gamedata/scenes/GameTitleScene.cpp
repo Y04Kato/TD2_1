@@ -1,6 +1,7 @@
 #include"GameTitleScene.h"
 #include "../MapManager.h"
 #include "gamedata/Fade.h"
+#include "components/utilities/globalVariables/GlobalVariables.h"
 
 void GameTitleScene::Initialize(){
 	//CJEngine
@@ -34,15 +35,52 @@ void GameTitleScene::Initialize(){
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
 
+	RTTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/RT.png");
+	spaceTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/space.png");
+	pressTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/pre.png");
+
+	Vector4 leftTop = { float(-kRTWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	Vector4 rightBottom = { float(kRTWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	RTSprite_.reset(new CreateSprite);
+	RTSprite_->Initialize(leftTop, rightBottom);
+
+	leftTop = { float(-kpressWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kpressWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	pressSprite_.reset(new CreateSprite);
+	pressSprite_->Initialize(leftTop, rightBottom);
+
+	XINPUT_STATE joyState;
+	isDrawController_ = Input::GetInstance()->GetJoystickState(0, joyState);
+
+	inputAlpha_ = 1.0f;
+	GlobalVariables* globalVariables{};
+	globalVariables = GlobalVariables::GetInstance();
+
+	const char* groupName = "GameTitleScene";
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "RT", RTTransform_.translate);
+	globalVariables->AddItem(groupName, "press", pressTransform_.translate);
+
 }
 
 void GameTitleScene::Update(){
-	if (input_->PressKey(DIK_SPACE) && !isSceneChange_) {
+	ApplyGlobalVariables();
+	XINPUT_STATE joyState;
+	bool isConnect = Input::GetInstance()->GetJoystickState(0, joyState);
+	if ((input_->PressKey(DIK_SPACE)|| (isConnect && joyState.Gamepad.bRightTrigger != 0)) && !isSceneChange_) {
 		//sceneNo = 1;
 		if (!Fade::GetInstance()->IsFade()) {
 			Fade::GetInstance()->FadeIn();
 			isSceneChange_ = true;
 		}
+	}
+
+	float t = (float(flick_) / float(flickLength) - 0.5f)*2.0f;
+	inputAlpha_ = (t*t);
+
+	flick_++;
+	if (flick_>flickLength) {
+		flick_ = 0;
 	}
 
 	if (!isSceneChange_) {
@@ -68,6 +106,7 @@ void GameTitleScene::Update(){
 	unit_->Update();
 	Fade::GetInstance()->Update();
 	worldTransformBackGround_.UpdateMatrix();
+	preJoyState = joyState;
 }
 
 void GameTitleScene::Draw(){
@@ -81,6 +120,17 @@ void GameTitleScene::Draw(){
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
+	uint32_t breakth = spaceTextureHandle_;
+
+	Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	color.num[3] = inputAlpha_;
+	if (isDrawController_) {
+		//moveth = stickTextureHandle_;
+		breakth = RTTextureHandle_;
+	}
+	RTSprite_->Draw(RTTransform_, uv, color, breakth);
+	pressSprite_->Draw(pressTransform_, uv, color, pressTextureHandle_);
 
 	Fade::GetInstance()->Draw();
 #pragma endregion
@@ -88,4 +138,11 @@ void GameTitleScene::Draw(){
 
 void GameTitleScene::Finalize() {
 	
+}
+
+void GameTitleScene::ApplyGlobalVariables() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "GameTitleScene";
+	RTTransform_.translate = globalVariables->GetVector3Value(groupName, "RT");
+	pressTransform_.translate = globalVariables->GetVector3Value(groupName, "press");
 }
