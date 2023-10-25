@@ -96,6 +96,13 @@ void GamePlayScene::Initialize() {
 	const char* groupName = "GamePlayScene";
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "Test", 90);
+	globalVariables->AddItem(groupName, "stick", stickTransform_.translate);
+	globalVariables->AddItem(groupName, "move", moveTransform_.translate);
+	globalVariables->AddItem(groupName, "RT", RTTransform_.translate);
+	globalVariables->AddItem(groupName, "break", breakTransform_.translate);
+
+	XINPUT_STATE joyState;
+	isDrawController_ = Input::GetInstance()->GetJoystickState(0, joyState);
 #endif
 	//Map
 	MapManager::GetInstance()->Initialize();
@@ -123,6 +130,35 @@ void GamePlayScene::Initialize() {
 
 	target_.reset(new Target);
 	target_->Initialize();
+
+	stickTextureHandle_=TextureManager::GetInstance()->Load("project/gamedata/resources/botan.png");
+	arrowTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/arrow.png");
+	moveTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/idou.png");
+	RTTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/RT.png");
+	spaceTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/space.png");
+	breakTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/break.png");
+
+	Vector4 leftTop = { float(-kstickWidth / 2),float(-kHeight/2),0.0f,1.0f };
+	Vector4 rightBottom = { float(kstickWidth / 2),float(kHeight/2),0.0f,1.0f };
+	stickSprite_.reset(new CreateSprite);
+	stickSprite_->Initialize(leftTop, rightBottom);
+	
+	leftTop = { float(-kmoveWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kmoveWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	moveSprite_.reset(new CreateSprite);
+	moveSprite_->Initialize(leftTop, rightBottom);
+
+	leftTop = { float(-kRTWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kRTWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	RTSprite_.reset(new CreateSprite);
+	RTSprite_->Initialize(leftTop, rightBottom);
+
+	leftTop = { float(-kbreakWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kbreakWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	breakSprite_.reset(new CreateSprite);
+	breakSprite_->Initialize(leftTop, rightBottom);
+	
+
 }
 
 void GamePlayScene::Update() {
@@ -333,6 +369,22 @@ void GamePlayScene::Draw() {
 		target_->Draw();
 		unit_->DrawUI();
 	}
+	Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
+	
+	uint32_t moveth = arrowTextureHandle_;
+	uint32_t breakth = spaceTextureHandle_;
+
+	if (isDrawController_) {
+		moveth = stickTextureHandle_;
+		breakth = RTTextureHandle_;
+	}
+
+	stickSprite_->Draw(stickTransform_,uv,color,moveth);
+	moveSprite_->Draw(moveTransform_, uv, color, moveTextureHandle_);
+	RTSprite_->Draw(RTTransform_,uv,color,breakth);
+	breakSprite_->Draw(breakTransform_,uv,color,breakTextureHandle_);
+
 	ScoreManager::GetInstance()->Draw();
 	timer_->Draw();
 	Fade::GetInstance()->Draw();
@@ -372,4 +424,8 @@ void GamePlayScene::Finalize() {
 void GamePlayScene::ApplyGlobalVariables() {
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	const char* groupName = "GamePlayScene";
+	stickTransform_.translate = globalVariables->GetVector3Value(groupName, "stick");
+	moveTransform_.translate = globalVariables->GetVector3Value(groupName, "move");
+	RTTransform_.translate = globalVariables->GetVector3Value(groupName, "RT");
+	breakTransform_.translate = globalVariables->GetVector3Value(groupName, "break");
 }

@@ -98,4 +98,36 @@ private:
 
 	//シーンチェンジフラグ
 	bool isSceneChange_ = false;
+
+	bool isDrawController_;
+
+	const int32_t kHeight = 128;
+
+	std::unique_ptr<CreateSprite> stickSprite_;
+	Transform stickTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	const int32_t kstickWidth = 128;
+	//std::unique_ptr<CreateSprite> arrowSprite_;
+	//Transform arrowTransform_;
+	//const int32_t karrowWidth = 128;
+	std::unique_ptr<CreateSprite> moveSprite_;
+	Transform moveTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	const int32_t kmoveWidth = 300;
+	
+	std::unique_ptr<CreateSprite> RTSprite_;
+	Transform RTTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	const int32_t kRTWidth = 128;
+	//std::unique_ptr<CreateSprite> spaceSprite_;
+	//Transform spaceTransform_;
+	//const int32_t kspaceWidth = 128;
+	std::unique_ptr<CreateSprite> breakSprite_;
+	Transform breakTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	const int32_t kbreakWidth = 300;
+
+	uint32_t stickTextureHandle_;
+	uint32_t arrowTextureHandle_;
+	uint32_t moveTextureHandle_;
+	uint32_t RTTextureHandle_;
+	uint32_t spaceTextureHandle_;
+	uint32_t breakTextureHandle_;
+
 };

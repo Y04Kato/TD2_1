@@ -31,6 +31,8 @@ public:
 
 	void InPutJoyStick();
 
+	bool IsJoyStick() { isInputJoy_; };
+
 private:
 	Input* input_ = nullptr;
 	std::unique_ptr<Model> model_;
@@ -76,4 +78,7 @@ private:
 	bool isButtonAble_ = false;
 
 	XINPUT_STATE preJoyState;
+
+	//最後のにゅりょくがコントローラかどうか
+	bool isInputJoy_=true;
 };
