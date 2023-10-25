@@ -1,7 +1,7 @@
 {
     "UnitLevel3Parameta": {
-        "LevelStart": 180,
+        "LevelStart": 360,
         "MoveEnd": 15,
-        "RespawnTime": 100
+        "RespawnTime": 140
     }
 }
