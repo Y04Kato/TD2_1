@@ -27,6 +27,8 @@ public:
 	void Move();
 	void Create();
 
+	void ApplyGlobalVariables();
+
 private:
 	std::unique_ptr<Model> model_;
 	VectorInt2 mapPosition_;
@@ -56,4 +58,22 @@ private:
 
 	Audio* audio_;
 	SoundData soundData1_;
+
+	//生存時間
+	int32_t liveTime_;
+	//強化段階
+	int32_t powerStep_;
+
+	//強化フレーム
+	int32_t kLevel2 = 0;
+	int32_t kLevel3 = 0;
+
+	int32_t kRespawnLev1;
+	int32_t kRespawnLev2;
+	int32_t kRespawnLev3;
+
+	int32_t kMoveEndLev1;
+	int32_t kMoveEndLev2;
+	int32_t kMoveEndLev3;
+
 };

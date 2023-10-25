@@ -2,9 +2,29 @@
 #include <algorithm>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "components/utilities/globalVariables/GlobalVariables.h"
 void (Unit::* Unit::phaseTable[])() = { &Unit::Next,&Unit::Move, &Unit::Create };
 
 void Unit::Initialize() {
+	GlobalVariables* grovalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "UnitLevel1Parameta";
+	grovalVariables->CreateGroup(groupName);
+	grovalVariables->AddItem(groupName, "MoveEnd", kMoveEndLev1);
+	grovalVariables->AddItem(groupName, "RespawnTime", kRespawnLev1);
+
+	const char* groupName2 = "UnitLevel2Parameta";
+	grovalVariables->CreateGroup(groupName2);
+	grovalVariables->AddItem(groupName2, "LevelStart", kLevel2);
+	grovalVariables->AddItem(groupName2, "MoveEnd", kMoveEndLev2);
+	grovalVariables->AddItem(groupName2, "RespawnTime", kRespawnLev2);
+
+	const char* groupName3 = "UnitLevel3Parameta";
+	grovalVariables->CreateGroup(groupName3);
+	grovalVariables->AddItem(groupName3, "LevelStart", kLevel3);
+	grovalVariables->AddItem(groupName3, "MoveEnd", kMoveEndLev3);
+	grovalVariables->AddItem(groupName3, "RespawnTime", kRespawnLev3);
+
+
 	model_.reset(Model::CreateModelFromObj("project/gamedata/resources/Unit", "Unit.obj"));
 	worldTransform_.Initialize();
 	targetWorldTransform_.Initialize();
@@ -30,6 +50,9 @@ void Unit::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	soundData1_ = audio_->SoundLoadWave("project/gamedata/resources/block.wav");
+
+	liveTime_ = 0;
+	powerStep_ = 1;
 }
 
 void Unit::ShortInitialize() {
@@ -48,14 +71,17 @@ void Unit::ShortInitialize() {
 	respawnCoolTime = 0;
 	phase_ = Phase::Next;
 	material = {1.0f,0.0f,0.0f,1.0f};
+	liveTime_ = 0;
+	powerStep_ = 1;
 }
 
 void Unit::Update() {
-
+	ApplyGlobalVariables();
 	if (!isLive_)
 	{
 		if (respawnCoolTime <= 0)
 		{
+			liveTime_ = 0;
 			isLive_ = true;
 			mapPosition_ = MapManager::GetInstance()->GetCorePosition();
 			phase_ = Phase::Next;
@@ -77,6 +103,27 @@ void Unit::Update() {
 			respawnCoolTime = kRespawnTime;
 		}
 		if (isLive_) {
+			powerStep_ = 1;
+			if (liveTime_>= kLevel2) {
+				powerStep_ = 2;
+			}
+			if (liveTime_ >= kLevel3) {
+				powerStep_ = 3;
+			}
+
+			if (powerStep_ == 1) {
+				moveEnd = kMoveEndLev1;
+				kRespawnTime = kRespawnLev1;
+			}
+			if (powerStep_ == 2) {
+				moveEnd = kMoveEndLev2;
+				kRespawnTime = kRespawnLev2;
+			}
+			if (powerStep_ == 3) {
+				moveEnd = kMoveEndLev3;
+				kRespawnTime = kRespawnLev3;
+			}
+
 			(this->*phaseTable[static_cast<size_t>(phase_)])();
 			//向きを進行方向に変える
 			if (direction_ == MapManager::Direction::Top) {
@@ -91,6 +138,7 @@ void Unit::Update() {
 			else if (direction_ == MapManager::Direction::Right) {
 				worldTransform_.rotation_.num[1] = -float(M_PI) / 2.0f;
 			}
+			liveTime_++;
 		}
 	}
 	worldTransform_.UpdateMatrix();
@@ -163,4 +211,22 @@ void Unit::Create()
 void Unit::Draw(const ViewProjection& viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection, material, directionalLight_);
+}
+
+void Unit::ApplyGlobalVariables() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "UnitLevel1Parameta";
+	kMoveEndLev1 = globalVariables->GetIntValue(groupName, "MoveEnd");
+	kRespawnLev1 = globalVariables->GetIntValue(groupName, "RespawnTime");
+
+	const char* groupName2 = "UnitLevel2Parameta";
+	kLevel2 = globalVariables->GetIntValue(groupName2,"LevelStart");
+	kMoveEndLev2 = globalVariables->GetIntValue(groupName2, "MoveEnd");
+	kRespawnLev2 = globalVariables->GetIntValue(groupName2, "RespawnTime");
+
+	const char* groupName3 = "UnitLevel3Parameta";
+	kLevel3 = globalVariables->GetIntValue(groupName2, "LevelStart");
+	kMoveEndLev3 = globalVariables->GetIntValue(groupName2, "MoveEnd");
+	kRespawnLev3 = globalVariables->GetIntValue(groupName2, "RespawnTime");
+
 }
