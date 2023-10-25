@@ -53,6 +53,22 @@ void Unit::Initialize() {
 
 	liveTime_ = 0;
 	powerStep_ = 1;
+
+	spriteNeedle_.reset(new CreateSprite());
+	spriteTimer_.reset(new CreateSprite());
+	Vector4 leftTop = { float(-kWidth / 2),float(-kHeight/2),0.0f,1.0f };
+	Vector4 rightBottom = { float(kWidth / 2),float(kHeight/2),0.0f,1.0f };
+	spriteNeedle_->Initialize(leftTop, rightBottom);
+	spriteTimer_->Initialize(leftTop, rightBottom);
+
+	respawnTimerTextureHandle_[0] = TextureManager::GetInstance()->Load("project/gamedata/resources/revivaltime.png");
+	respawnTimerTextureHandle_[1] = TextureManager::GetInstance()->Load("project/gamedata/resources/revivaltime1.png");
+	respawnTimerTextureHandle_[2] = TextureManager::GetInstance()->Load("project/gamedata/resources/revivaltime2.png");
+	respawnTimerTextureHandle_[3] = TextureManager::GetInstance()->Load("project/gamedata/resources/revivaltime3.png");
+	respawnTimerTextureHandle_[4] = TextureManager::GetInstance()->Load("project/gamedata/resources/revivaltime.png");
+
+	needleTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/revival.png");
+
 }
 
 void Unit::ShortInitialize() {
@@ -231,3 +247,42 @@ void Unit::ApplyGlobalVariables() {
 	kRespawnLev3 = globalVariables->GetIntValue(groupName3, "RespawnTime");
 
 }
+
+void Unit::DrawUI() {
+	if (!isLive_) {
+		uint32_t textureHandle_;
+		float persent = float(kRespawnTime - respawnCoolTime) / float(kRespawnTime);
+		if (persent < 1.0f / 4.0f) {
+			textureHandle_ = respawnTimerTextureHandle_[0];
+		}
+		else if (persent < 1.0f / 2.0f) {
+			textureHandle_ = respawnTimerTextureHandle_[1];
+		}
+		else if (persent < 3.0f / 4.0f) {
+			textureHandle_ = respawnTimerTextureHandle_[2];
+		}
+		else {
+			textureHandle_ = respawnTimerTextureHandle_[3];
+		}
+		Transform transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{float(timerPosotion_.x),float(timerPosotion_.y),0.0f} };
+		Transform transformNeelde = { {1.0f,1.0f,1.0f},{0.0f,0.0f,persent * 2 * float(M_PI)},{float(timerPosotion_.x),float(timerPosotion_.y),0.0f} };
+		Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+		Vector4 color{ 1.0f,1.0f,1.0f,1.0f };
+		spriteTimer_->Draw(transform, uv, { 1.0f,1.0f,1.0f,1.0f }, textureHandle_);
+		spriteNeedle_->Draw(transformNeelde, uv, { 1.0f,1.0f,1.0f,1.0f }, needleTextureHandle_);
+	}
+	
+}
+
+void Unit::SetCorePosition(const ViewProjection& viewProjection) {
+	WorldTransform& worldTransform = MapManager::GetWorldTransform(MapManager::GetInstance()->GetCorePosition());
+	Matrix4x4 matViewport =
+		MakeViewportMatrix(0, 0, WinApp::kClientWidth, WinApp::kClientHeight, 0, 1.0f);
+	worldTransform.translation_;
+	Vector3 screen = TransformN(worldTransform.translation_, Multiply(Multiply(viewProjection.matView, viewProjection.matProjection), matViewport));
+	timerOffset_.x = int(screen.num[0]);
+	timerOffset_.y = int(screen.num[1]);
+	timerPosotion_ = timerOffset_;
+	timerPosotion_.y -= 64;
+}
+

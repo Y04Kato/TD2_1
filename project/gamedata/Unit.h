@@ -5,7 +5,7 @@
 #include "components/3d/ViewProjection.h"
 #include "components/3d/Model.h"
 #include "components/audio/Audio.h"
-
+#include "components/2d/CreateSprite.h"
 #include <memory>
 
 class Unit {
@@ -23,11 +23,15 @@ public:
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 
+	void DrawUI();
+
 	void Next();
 	void Move();
 	void Create();
 
 	void ApplyGlobalVariables();
+
+	void SetCorePosition(const ViewProjection& viewProjection);
 
 private:
 	std::unique_ptr<Model> model_;
@@ -78,4 +82,16 @@ private:
 
 	//動いてる最中に切り替わって挙動がおかしくなるのを防ぐ用
 	int32_t nextMoveEnd;
+
+	uint32_t needleTextureHandle_;
+	std::array<uint32_t,size_t(5)> respawnTimerTextureHandle_;
+	std::unique_ptr<CreateSprite> spriteNeedle_;
+	std::unique_ptr<CreateSprite> spriteTimer_;
+
+	//一桁ごとのサイズ
+	const int32_t kWidth = 64;
+	const int32_t kHeight = 64;
+
+	VectorInt2 timerPosotion_;
+	VectorInt2 timerOffset_;
 };

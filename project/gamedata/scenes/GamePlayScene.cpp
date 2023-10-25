@@ -287,6 +287,7 @@ void GamePlayScene::Update() {
 			//sceneNo = 0;
 		}*/
 	}
+	unit_->SetCorePosition(viewProjection_);
 	target_->SetWorldTransform(MapManager::GetWorldTransform(MapManager::GetInstance()->GetPriority()), viewProjection_);
 	target_->Update();
 	worldTransformBackGround_.UpdateMatrix();
@@ -330,6 +331,7 @@ void GamePlayScene::Draw() {
 	CJEngine_->PreDraw2D();
 	if (inGame_) {
 		target_->Draw();
+		unit_->DrawUI();
 	}
 	ScoreManager::GetInstance()->Draw();
 	timer_->Draw();
