@@ -69,7 +69,7 @@ void Player::Update() {
 		MapManager::GetInstance()->CreateBlock(mapPosition_);
 	}
 #endif // _DEBUG
-	InPutJoyStick();
+	//InPutJoyStick();
 	(this->*phaseTable[static_cast<size_t>(phase_)])();
 	worldTransform_.translation_.num[1] = 2.0f;
 	worldTransform_.UpdateMatrix();
@@ -85,6 +85,7 @@ void Player::Update() {
 }
 
 void Player::Idle() {
+	InPutJoyStick();
 	frameCount_ = 0;
 	//moveTarget_ = {0,0};
 	if (input_->TriggerKey(DIK_LEFT)) {
@@ -265,8 +266,8 @@ void Player::InPutJoyStick() {
 	}
 	if (move.num[0] == 0 && move.num[1] == 0) {
 		joyStickAble_ = true;
-		moveTarget_.x = 0;
-		moveTarget_.y = 0;
+		//moveTarget_.x = 0;
+		//moveTarget_.y = 0;
 		return;
 	}
 	if (joyStickAble_ || 1) {
