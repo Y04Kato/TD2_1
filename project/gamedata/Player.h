@@ -29,6 +29,8 @@ public:
 	void Move();
 	void Break();
 
+	void InPutJoyStick();
+
 private:
 	Input* input_ = nullptr;
 	std::unique_ptr<Model> model_;
@@ -69,4 +71,9 @@ private:
 
 	//アニメーションの分岐用
 	bool isBreakBlock_ = false;
+
+	bool joyStickAble_ = false;
+	bool isButtonAble_ = false;
+
+	XINPUT_STATE preJoyState;
 };

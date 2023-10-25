@@ -68,3 +68,30 @@ bool Input::ReleaseKey(BYTE keyNumber)const {
 		return false;
 	}
 }
+
+bool Input::GetJoystickState(uint8_t stickNo, XINPUT_STATE& out)
+{
+	DWORD result = XInputGetState(stickNo, &out);
+	//out.Gamepad.sThumbLX = std::max();
+	if (unsigned(std::abs(out.Gamepad.sThumbLX)) <= Input::GetInstance()->deadzoneLeft)
+	{
+		out.Gamepad.sThumbLX = 0;
+	}
+	if (unsigned(std::abs(out.Gamepad.sThumbLY)) <= Input::GetInstance()->deadzoneLeft)
+	{
+		out.Gamepad.sThumbLY = 0;
+	}
+	if (unsigned(std::abs(out.Gamepad.sThumbRX)) <= Input::GetInstance()->deadzoneRight)
+	{
+		out.Gamepad.sThumbRX = 0;
+	}
+	if (unsigned(std::abs(out.Gamepad.sThumbRY)) <= Input::GetInstance()->deadzoneRight)
+	{
+		out.Gamepad.sThumbRY = 0;
+	}
+	if (result == ERROR_SUCCESS)
+	{
+		return true;
+	}
+	return false;
+}

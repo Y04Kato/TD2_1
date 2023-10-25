@@ -20,6 +20,9 @@ void SceneManager::Initialize() {
 	audio_ = Audio::GetInstance();
 	audio_->Initialize();
 
+	soundBGMData_ = audio_->SoundLoadWave("project/gamedata/resources/sound/electronic.wav");
+	audio_->SoundPlayWave(soundBGMData_, 0.3f, true);
+
 	//Input
 	input_ = Input::GetInstance();
 	input_->Initialize();

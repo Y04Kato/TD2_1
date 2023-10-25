@@ -45,7 +45,7 @@ void Explosion2::Draw(const ViewProjection& viewProjection) {
 }
 
 void Explosion2::ExplosionFlagTrue() {
-	audio_->SoundPlayWave(soundData1_, 0.5f);
+	audio_->SoundPlayWave(soundData1_, 1.0f, false);
 	isExplosion = true;
 }
 

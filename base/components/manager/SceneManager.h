@@ -34,6 +34,8 @@ private:
 
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	SoundData soundBGMData_;
+
 	TextureManager* textureManager = nullptr;
 
 	std::unique_ptr<Iscene>scene_[SCENE_MAX];
