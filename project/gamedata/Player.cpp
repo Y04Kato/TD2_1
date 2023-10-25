@@ -69,7 +69,7 @@ void Player::Update() {
 		MapManager::GetInstance()->CreateBlock(mapPosition_);
 	}
 #endif // _DEBUG
-
+	InPutJoyStick();
 	(this->*phaseTable[static_cast<size_t>(phase_)])();
 	worldTransform_.translation_.num[1] = 2.0f;
 	worldTransform_.UpdateMatrix();
@@ -236,4 +236,56 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransformCursor_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	modelUp_->Draw(worldTransformUp_, viewProjection, Vector4{ 1.0f,1.0f,1.0f,1.0f }, directionalLight_);
 	explosion_->Draw(viewProjection);
+}
+
+void Player::InPutJoyStick() {
+	XINPUT_STATE joyState;
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+	Vector2 move = {
+			float(joyState.Gamepad.sThumbLX) / SHRT_MAX,
+			float(joyState.Gamepad.sThumbLY) / SHRT_MAX };
+	if (std::abs( move.num[0]) < 0.8f) {
+		move.num[0] = 0;
+	}
+	if (std::abs(move.num[1]) < 0.8f) {
+		move.num[1] = 0;
+	}
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B || 
+		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		if (isButtonAble_) {
+			isBreak_ = true;
+			isMove_ = false;
+		}
+		isButtonAble_ = false;
+	}
+	else {
+		isButtonAble_ = true;
+	}
+	if (move.num[0] == 0 && move.num[1] == 0) {
+		joyStickAble_ = true;
+		return;
+	}
+	if (joyStickAble_) {
+		if ((move.num[1] * move.num[1]) <= (move.num[0] * move.num[0])) {
+			move.num[1] = 0.0f;
+		}
+		else {
+			move.num[0] = 0.0f;
+		}
+
+		move.num[0] *= 100.0f;
+		move.num[1] *= 100.0f;
+
+		move.num[0] = std::clamp(move.num[0], -1.1f, 1.1f);
+		move.num[1] = std::clamp(move.num[1], -1.1f, 1.1f);
+		moveTarget_.x = int(move.num[0]);
+		moveTarget_.y = -int(move.num[1]);
+		isMove_ = true;
+		isBreak_ = false;
+
+		joyStickAble_ = false;
+	}
+	
 }
