@@ -165,6 +165,10 @@ void GamePlayScene::Initialize() {
 
 	isDrawtutorial_ = true;
 	slideNum_ = 0;
+	isReLoad_=true;
+
+	slideTextureHandle_[0] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide1.png");
+	slideTextureHandle_[1] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide2.png");
 }
 
 void GamePlayScene::Update() {
@@ -297,24 +301,36 @@ void GamePlayScene::Update() {
 
 	XINPUT_STATE joyState;
 	bool isConnect = Input::GetInstance()->GetJoystickState(0, joyState);
-	//float rTrigger = float(joyState.Gamepad.bRightTrigger) / float(SHRT_MAX);
+	float rTrigger = float(joyState.Gamepad.bRightTrigger) / float(255);
+	float preRTrigger = float(preJoyState.Gamepad.bRightTrigger) / float(255);
 	if (!inGame_) {
-		//inGame_ = true;
-		MapManager::GetInstance()->ShortInitialize();
-		player_->ShortInitialize();
-		unit_->ShortInitialize();
-		ScoreManager::GetInstance()->Initialize();
-		//仮
-		gameEndTimer_ = kPlayTime;
-		timer_->SetNowTime(gameEndTimer_ / 60);
-		if (!Fade::GetInstance()->IsFade()) {
-			Fade::GetInstance()->FadeOut();
-			inGame_ = true;
+		if (isReLoad_) {
+			isReLoad_ = false;
+			//inGame_ = true;
+			isDrawtutorial_ = false;
+			slideNum_ = 0;
+			MapManager::GetInstance()->ShortInitialize();
+			player_->ShortInitialize();
+			unit_->ShortInitialize();
+			ScoreManager::GetInstance()->Initialize();
+			//仮
+			gameEndTimer_ = kPlayTime;
+			timer_->SetNowTime(gameEndTimer_ / 60);
+			if (!Fade::GetInstance()->IsFade()) {
+				Fade::GetInstance()->FadeOut();
+				//inGame_ = true;
+				isDrawtutorial_ = true;
+			}
 		}
-		/*if (input_->PressKey(DIK_SPACE) ||
-			(isConnect && (joyState.Gamepad.bRightTrigger <=XINPUT_ && ))){
-
-		}*/
+		
+		if (input_->TriggerKey(DIK_SPACE) ||(isConnect && (rTrigger >= 0.8 && preRTrigger <=0.8))){
+			slideNum_++;
+			if (slideNum_ >= kSlideNum) {
+				isDrawtutorial_ = false;
+				inGame_ = true;
+				isReLoad_ = true;
+			}
+		}
 	}
 	if (inGame_ && !Fade::GetInstance()->IsFade()) {
 		ScoreManager::GetInstance()->FrameStart();
@@ -345,7 +361,7 @@ void GamePlayScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("Score");
 	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
-	ImGui::Text("rtrigger : %d", joyState.Gamepad.bRightTrigger);
+	ImGui::DragFloat3("slide", &sliderTransform_.translate.num[0],1.0f);
 	ImGui::End();
 #endif // _DEBUG
 	preJoyState = joyState;

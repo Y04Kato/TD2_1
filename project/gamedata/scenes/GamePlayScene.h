@@ -132,15 +132,17 @@ private:
 
 	bool isDrawtutorial_;
 
-	const int32_t kSlidewidth = 600;
-	const int32_t kSlideHeight = 800;
+	const int32_t kSlidewidth = 800;
+	const int32_t kSlideHeight = 600;
 
 	static const int kSlideNum = 2;
 
 	int32_t slideNum_;
-	Transform sliderTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{620.310f,0.0f,0.0f} };
+	Transform sliderTransform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{620.0f,360.0f,0.0f} };
 	std::unique_ptr<CreateSprite> slideSprite_;
 	std::array<uint32_t,size_t(kSlideNum)> slideTextureHandle_;
 
 	XINPUT_STATE preJoyState;
+
+	bool isReLoad_;
 };
