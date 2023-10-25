@@ -86,7 +86,7 @@ void Unit::ShortInitialize() {
 	isLive_ = true;
 	respawnCoolTime = 0;
 	phase_ = Phase::Next;
-	material = {1.0f,0.0f,0.0f,1.0f};
+	material = {0.3f,0.9f,0.5f,1.0f};
 	liveTime_ = 0;
 	powerStep_ = 1;
 }
@@ -105,7 +105,7 @@ void Unit::Update() {
 			worldTransform_.translation_.num[0] = worldPos.num[0];
 			worldTransform_.translation_.num[2] = worldPos.num[2];
 			worldTransform_.translation_.num[1] = 2.0f;
-			material = { 1.0f,0.0f,0.0f,1.0f };
+			material = { 0.3f,0.9f,0.5f,1.0f };
 			worldTransform_.UpdateMatrix();
 		}
 		respawnCoolTime--;
