@@ -17,7 +17,6 @@ public:
 	enum SCENE {
 		TITLE_SCENE,
 		GAME_SCENE,
-		CLEAR_SCENE,
 		SCENE_MAX
 	};
 

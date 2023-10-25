@@ -251,8 +251,6 @@ void GamePlayScene::Update() {
 
 	ImGui::End();
 #endif
-	ScoreManager::GetInstance()->SetTransform(Transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{100.0f,0.0f,0.0f} });
-
 	if (!inGame_) {
 		//inGame_ = true;
 		MapManager::GetInstance()->ShortInitialize();
@@ -275,17 +273,19 @@ void GamePlayScene::Update() {
 		ScoreManager::GetInstance()->ScoreConfirm();
 		gameEndTimer_--;
 		timer_->SetNowTime(gameEndTimer_ / 60);
-		if (gameEndTimer_ <= 0) {
+		/*if (gameEndTimer_ <= 0) {
 			if (isSceneChange_ && !Fade::GetInstance()->IsFade()) {
 				inGame_ = false;
-				sceneNo = 2;
+				sceneNo = 0;
 				isSceneChange_ = false;
 			}
 			if (!Fade::GetInstance()->IsFade() && Fade::GetInstance()->IsFadeEnd()) {
 				Fade::GetInstance()->FadeIn();
 				isSceneChange_ = true;
 			}
-		}
+
+			//sceneNo = 0;
+		}*/
 	}
 	unit_->SetCorePosition(viewProjection_);
 	target_->SetWorldTransform(MapManager::GetWorldTransform(MapManager::GetInstance()->GetPriority()), viewProjection_);
