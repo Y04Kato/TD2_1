@@ -74,6 +74,11 @@ void MapManager::MapRead()
 		map[y][0].worldTransform.translation_.num[0] = float(0) * 2.0f;
 		map[y][0].worldTransform.translation_.num[2] = -float(y) * 2.0f;
 		map[y][0].worldTransform.UpdateMatrix();
+		map[y][0].top = false;
+		map[y][0].down = false;
+		map[y][0].left = false;
+		map[y][0].right = false;
+
 		if (map[y][0].mapstate == MapState::Bomb) {
 			bombs_.push_back({
 				{x, 0},
@@ -89,6 +94,11 @@ void MapManager::MapRead()
 				map[y][x].worldTransform.translation_.num[0] = float(x) * 2.0f;
 				map[y][x].worldTransform.translation_.num[2] = -float(y) * 2.0f;
 				map[y][x].worldTransform.UpdateMatrix();
+				map[y][x].top = false;
+				map[y][x].down = false;
+				map[y][x].left = false;
+				map[y][x].right = false;
+
 				if (map[y][x].mapstate == MapState::Bomb)
 				{
 					bombs_.push_back({
