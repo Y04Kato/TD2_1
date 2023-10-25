@@ -265,9 +265,11 @@ void Player::InPutJoyStick() {
 	}
 	if (move.num[0] == 0 && move.num[1] == 0) {
 		joyStickAble_ = true;
+		moveTarget_.x = 0;
+		moveTarget_.y = 0;
 		return;
 	}
-	if (joyStickAble_) {
+	if (joyStickAble_ || 1) {
 		if ((move.num[1] * move.num[1]) <= (move.num[0] * move.num[0])) {
 			move.num[1] = 0.0f;
 		}
