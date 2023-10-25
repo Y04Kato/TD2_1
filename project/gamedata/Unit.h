@@ -76,4 +76,6 @@ private:
 	int32_t kMoveEndLev2;
 	int32_t kMoveEndLev3;
 
+	//動いてる最中に切り替わって挙動がおかしくなるのを防ぐ用
+	int32_t nextMoveEnd;
 };

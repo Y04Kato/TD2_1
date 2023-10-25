@@ -112,15 +112,15 @@ void Unit::Update() {
 			}
 
 			if (powerStep_ == 1) {
-				moveEnd = kMoveEndLev1;
+				nextMoveEnd = kMoveEndLev1;
 				kRespawnTime = kRespawnLev1;
 			}
 			if (powerStep_ == 2) {
-				moveEnd = kMoveEndLev2;
+				nextMoveEnd = kMoveEndLev2;
 				kRespawnTime = kRespawnLev2;
 			}
 			if (powerStep_ == 3) {
-				moveEnd = kMoveEndLev3;
+				nextMoveEnd = kMoveEndLev3;
 				kRespawnTime = kRespawnLev3;
 			}
 
@@ -151,6 +151,7 @@ void Unit::Update() {
 #endif
 }
 void Unit::Next() {
+	moveEnd = nextMoveEnd;
 	VectorInt2 targetBomb = MapManager::GetInstance()->GetPriority();
 	targetBomb.x -= mapPosition_.x;
 	targetBomb.y -= mapPosition_.y;
