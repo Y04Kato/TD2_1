@@ -225,8 +225,8 @@ void Unit::ApplyGlobalVariables() {
 	kRespawnLev2 = globalVariables->GetIntValue(groupName2, "RespawnTime");
 
 	const char* groupName3 = "UnitLevel3Parameta";
-	kLevel3 = globalVariables->GetIntValue(groupName2, "LevelStart");
-	kMoveEndLev3 = globalVariables->GetIntValue(groupName2, "MoveEnd");
-	kRespawnLev3 = globalVariables->GetIntValue(groupName2, "RespawnTime");
+	kLevel3 = globalVariables->GetIntValue(groupName3, "LevelStart");
+	kMoveEndLev3 = globalVariables->GetIntValue(groupName3, "MoveEnd");
+	kRespawnLev3 = globalVariables->GetIntValue(groupName3, "RespawnTime");
 
 }
