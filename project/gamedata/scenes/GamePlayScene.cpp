@@ -158,7 +158,13 @@ void GamePlayScene::Initialize() {
 	breakSprite_.reset(new CreateSprite);
 	breakSprite_->Initialize(leftTop, rightBottom);
 	
+	leftTop = { float(-kSlidewidth / 2),float(-kSlideHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kSlidewidth / 2),float(kSlideHeight / 2),0.0f,1.0f };
+	slideSprite_.reset(new CreateSprite);
+	slideSprite_->Initialize(leftTop, rightBottom);
 
+	isDrawtutorial_ = true;
+	slideNum_ = 0;
 }
 
 void GamePlayScene::Update() {
@@ -289,6 +295,9 @@ void GamePlayScene::Update() {
 #endif
 	ScoreManager::GetInstance()->SetTransform(Transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{100.0f,0.0f,0.0f} });
 
+	XINPUT_STATE joyState;
+	bool isConnect = Input::GetInstance()->GetJoystickState(0, joyState);
+	//float rTrigger = float(joyState.Gamepad.bRightTrigger) / float(SHRT_MAX);
 	if (!inGame_) {
 		//inGame_ = true;
 		MapManager::GetInstance()->ShortInitialize();
@@ -302,6 +311,10 @@ void GamePlayScene::Update() {
 			Fade::GetInstance()->FadeOut();
 			inGame_ = true;
 		}
+		/*if (input_->PressKey(DIK_SPACE) ||
+			(isConnect && (joyState.Gamepad.bRightTrigger <=XINPUT_ && ))){
+
+		}*/
 	}
 	if (inGame_ && !Fade::GetInstance()->IsFade()) {
 		ScoreManager::GetInstance()->FrameStart();
@@ -332,8 +345,10 @@ void GamePlayScene::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("Score");
 	ImGui::Text("Score : %d",ScoreManager::GetInstance()->GetScore());
+	ImGui::Text("rtrigger : %d", joyState.Gamepad.bRightTrigger);
 	ImGui::End();
 #endif // _DEBUG
+	preJoyState = joyState;
 }
 
 void GamePlayScene::Draw() {
@@ -365,12 +380,14 @@ void GamePlayScene::Draw() {
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
+	Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+
 	if (inGame_) {
 		target_->Draw();
 		unit_->DrawUI();
 	}
-	Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
+	
 	
 	uint32_t moveth = arrowTextureHandle_;
 	uint32_t breakth = spaceTextureHandle_;
@@ -387,6 +404,10 @@ void GamePlayScene::Draw() {
 
 	ScoreManager::GetInstance()->Draw();
 	timer_->Draw();
+
+	if (!inGame_ && isDrawtutorial_) {
+		slideSprite_->Draw(sliderTransform_, uv, color, slideTextureHandle_[slideNum_]);
+	}
 	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {
