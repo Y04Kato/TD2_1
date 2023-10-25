@@ -74,4 +74,6 @@ private:
 
 	bool joyStickAble_ = false;
 	bool isButtonAble_ = false;
+
+	XINPUT_STATE preJoyState;
 };

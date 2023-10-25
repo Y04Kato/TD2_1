@@ -51,6 +51,8 @@ void Player::ShortInitialize() {
 }
 
 void Player::Update() {
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(0, joyState);
 
 	explosion_->Update(worldTransformBreak_);
 
@@ -82,31 +84,46 @@ void Player::Update() {
 	ImGui::SliderInt("break", &breakEnd, 1, 120);
 	ImGui::End();
 #endif
+	preJoyState = joyState;
 }
 
 void Player::Idle() {
 	InPutJoyStick();
 	frameCount_ = 0;
 	//moveTarget_ = {0,0};
-	if (input_->TriggerKey(DIK_LEFT)) {
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(0, joyState);
+	if (input_->TriggerKey(DIK_LEFT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) &&
+		!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT))) {
 		moveTarget_.x = -1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_RIGHT)) {
+	else if (input_->TriggerKey(DIK_RIGHT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT))) {
 		moveTarget_.x = 1;
 		moveTarget_.y = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_UP)) {
+	else if (input_->TriggerKey(DIK_UP) || 
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) &&
+		!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP))) {
 		moveTarget_.y = -1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_DOWN)) {
+	else if (input_->TriggerKey(DIK_DOWN) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN))) {
 		moveTarget_.y = 1;
 		moveTarget_.x = 0;
 		isMove_ = true;
+		isBreak_ = false;
 	}
 	if (isMove_)
 	{
@@ -133,25 +150,35 @@ void Player::Idle() {
 }
 
 void Player::Move() {
-	if (input_->TriggerKey(DIK_LEFT)) {
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(0, joyState);
+	if (input_->TriggerKey(DIK_LEFT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT))) {
 		moveTarget_.x = -1;
 		moveTarget_.y = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_RIGHT)) {
+	else if (input_->TriggerKey(DIK_RIGHT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT))) {
 		moveTarget_.x = 1;
 		moveTarget_.y = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_UP)) {
+	else if (input_->TriggerKey(DIK_UP) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP))) {
 		moveTarget_.y = -1;
 		moveTarget_.x = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_DOWN)) {
+	else if (input_->TriggerKey(DIK_DOWN) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN))) {
 		moveTarget_.y = 1;
 		moveTarget_.x = 0;
 		isMove_ = true;
@@ -176,25 +203,35 @@ void Player::Move() {
 
 void Player::Break() {
 	//先行入力受け付け
-	if (input_->TriggerKey(DIK_LEFT)) {
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(0, joyState);
+	if (input_->TriggerKey(DIK_LEFT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT))) {
 		moveTarget_.x = -1;
 		moveTarget_.y = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_RIGHT)) {
+	else if (input_->TriggerKey(DIK_RIGHT) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT))) {
 		moveTarget_.x = 1;
 		moveTarget_.y = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_UP)) {
+	else if (input_->TriggerKey(DIK_UP) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP))) {
 		moveTarget_.y = -1;
 		moveTarget_.x = 0;
 		isMove_ = true;
 		isBreak_ = false;
 	}
-	else if (input_->TriggerKey(DIK_DOWN)) {
+	else if (input_->TriggerKey(DIK_DOWN) ||
+		((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) &&
+			!(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN))) {
 		moveTarget_.y = 1;
 		moveTarget_.x = 0;
 		isMove_ = true;
@@ -247,6 +284,10 @@ void Player::InPutJoyStick() {
 	Vector2 move = {
 			float(joyState.Gamepad.sThumbLX) / SHRT_MAX,
 			float(joyState.Gamepad.sThumbLY) / SHRT_MAX };
+	/*
+	Vector2 move = {
+			float(joyState.Gamepad.sThumbLX) ,
+			float(joyState.Gamepad.sThumbLY)  };*/
 	if (std::abs( move.num[0]) < 0.8f) {
 		move.num[0] = 0;
 	}
@@ -254,7 +295,9 @@ void Player::InPutJoyStick() {
 		move.num[1] = 0;
 	}
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B || 
-		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A || 
+		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || 
+		joyState.Gamepad.bRightTrigger != 0) {
 		if (isButtonAble_) {
 			isBreak_ = true;
 			isMove_ = false;
