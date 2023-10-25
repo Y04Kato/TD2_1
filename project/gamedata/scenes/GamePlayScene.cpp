@@ -307,7 +307,7 @@ void GamePlayScene::Update() {
 		if (isReLoad_) {
 			isReLoad_ = false;
 			//inGame_ = true;
-			isDrawtutorial_ = false;
+			isDrawtutorial_ = true;
 			slideNum_ = 0;
 			MapManager::GetInstance()->ShortInitialize();
 			player_->ShortInitialize();
@@ -316,19 +316,26 @@ void GamePlayScene::Update() {
 			//仮
 			gameEndTimer_ = kPlayTime;
 			timer_->SetNowTime(gameEndTimer_ / 60);
-			if (!Fade::GetInstance()->IsFade()) {
+			/*if (!Fade::GetInstance()->IsFade()) {
 				Fade::GetInstance()->FadeOut();
 				//inGame_ = true;
 				isDrawtutorial_ = true;
-			}
+			}*/
 		}
 		
 		if (input_->TriggerKey(DIK_SPACE) ||(isConnect && (rTrigger >= 0.8 && preRTrigger <=0.8))){
 			slideNum_++;
 			if (slideNum_ >= kSlideNum) {
 				isDrawtutorial_ = false;
-				inGame_ = true;
+				//inGame_ = true;
 				isReLoad_ = true;
+				if (!Fade::GetInstance()->IsFade()) {
+					Fade::GetInstance()->FadeOut();
+					//inGame_ = true;
+					//isDrawtutorial_ = true;
+					inGame_ = true;
+					isReLoad_ = true;
+				}
 			}
 		}
 	}
@@ -421,10 +428,10 @@ void GamePlayScene::Draw() {
 	ScoreManager::GetInstance()->Draw();
 	timer_->Draw();
 
+	Fade::GetInstance()->Draw();
 	if (!inGame_ && isDrawtutorial_) {
 		slideSprite_->Draw(sliderTransform_, uv, color, slideTextureHandle_[slideNum_]);
 	}
-	Fade::GetInstance()->Draw();
 #ifdef _DEBUG
 	if (isSpriteDraw_) {
 		for (int i = 0; i < 1; i++) {//Sprite描画
