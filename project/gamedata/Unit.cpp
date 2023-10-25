@@ -220,7 +220,7 @@ void Unit::Move() {
 
 void Unit::Create()
 {
-	audio_->SoundPlayWave(soundData1_, 0.5f);
+	audio_->SoundPlayWave(soundData1_, 1.0f, false);
 	MapManager::GetInstance()->CreateBlock(target_, direction_);
 	phase_ = Phase::Next;
 }
