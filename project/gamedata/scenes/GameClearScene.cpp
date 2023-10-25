@@ -34,6 +34,26 @@ void GameClearScene::Initialize() {
 	worldTransformBackGround_.Initialize();
 	worldTransformBackGround_.translation_ = { 17.3f,-25.8f,-4.6f };
 	worldTransformBackGround_.scale_ = { 58.0f,1.0f,38.5f };
+
+
+	RTTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/RT.png");
+	spaceTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/space.png");
+	pressTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/pressTitle.png");
+
+	Vector4 leftTop = { float(-kRTWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	Vector4 rightBottom = { float(kRTWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	RTSprite_.reset(new CreateSprite);
+	RTSprite_->Initialize(leftTop, rightBottom);
+
+	leftTop = { float(-kpressWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(kpressWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	pressSprite_.reset(new CreateSprite);
+	pressSprite_->Initialize(leftTop, rightBottom);
+
+	XINPUT_STATE joyState;
+	isDrawController_ = Input::GetInstance()->GetJoystickState(0, joyState);
+
+	inputAlpha_ = 1.0f;
 }
 
 void GameClearScene::Update() {
@@ -44,6 +64,14 @@ void GameClearScene::Update() {
 			Fade::GetInstance()->FadeOut();
 			inResult_ = true;
 		}
+	}
+
+	float t = (float(flick_) / float(flickLength) - 0.5f) * 2.0f;
+	inputAlpha_ = (t * t);
+
+	flick_++;
+	if (flick_ > flickLength) {
+		flick_ = 0;
 	}
 
 	if (inResult_ && !Fade::GetInstance()->IsFade()) {
@@ -77,6 +105,19 @@ void GameClearScene::Draw() {
 
 #pragma region 前景スプライト描画
 	CJEngine_->PreDraw2D();
+
+	uint32_t breakth = spaceTextureHandle_;
+
+	Transform uv = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	color.num[3] = inputAlpha_;
+	if (isDrawController_) {
+		//moveth = stickTextureHandle_;
+		breakth = RTTextureHandle_;
+	}
+	RTSprite_->Draw(RTTransform_, uv, color, breakth);
+	pressSprite_->Draw(pressTransform_, uv, color, pressTextureHandle_);
+
 
 	ScoreManager::GetInstance()->Draw();
 	Fade::GetInstance()->Draw();
