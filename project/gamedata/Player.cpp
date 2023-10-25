@@ -294,9 +294,7 @@ void Player::InPutJoyStick() {
 	if (std::abs(move.num[1]) < 0.8f) {
 		move.num[1] = 0;
 	}
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B || 
-		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A || 
-		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || 
+	if ( 
 		joyState.Gamepad.bRightTrigger != 0) {
 		if (isButtonAble_) {
 			isBreak_ = true;
