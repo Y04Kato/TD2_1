@@ -52,4 +52,9 @@ private:
 	int32_t flick_=0;
 	int32_t flickLength=120;
 	XINPUT_STATE preJoyState;
+
+	std::unique_ptr<CreateSprite> titleSprite_;
+	Transform titleTransform_ = { {1.5f,1.5f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	const int32_t ktitleWidth = 600;
+	int32_t titleTextureHandle_;
 };

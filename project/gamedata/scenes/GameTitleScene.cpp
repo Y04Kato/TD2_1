@@ -38,7 +38,7 @@ void GameTitleScene::Initialize(){
 	RTTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/RT.png");
 	spaceTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/space.png");
 	pressTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/pre.png");
-
+	titleTextureHandle_ = TextureManager::GetInstance()->Load("project/gamedata/resources/title.png");
 	Vector4 leftTop = { float(-kRTWidth / 2),float(-kHeight / 2),0.0f,1.0f };
 	Vector4 rightBottom = { float(kRTWidth / 2),float(kHeight / 2),0.0f,1.0f };
 	RTSprite_.reset(new CreateSprite);
@@ -48,6 +48,11 @@ void GameTitleScene::Initialize(){
 	rightBottom = { float(kpressWidth / 2),float(kHeight / 2),0.0f,1.0f };
 	pressSprite_.reset(new CreateSprite);
 	pressSprite_->Initialize(leftTop, rightBottom);
+
+	leftTop = { float(-ktitleWidth / 2),float(-kHeight / 2),0.0f,1.0f };
+	rightBottom = { float(ktitleWidth / 2),float(kHeight / 2),0.0f,1.0f };
+	titleSprite_.reset(new CreateSprite);
+	titleSprite_->Initialize(leftTop, rightBottom);
 
 	XINPUT_STATE joyState;
 	isDrawController_ = Input::GetInstance()->GetJoystickState(0, joyState);
@@ -60,6 +65,7 @@ void GameTitleScene::Initialize(){
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "RT", RTTransform_.translate);
 	globalVariables->AddItem(groupName, "press", pressTransform_.translate);
+	globalVariables->AddItem(groupName, "title", titleTransform_.translate);
 
 }
 
@@ -131,7 +137,7 @@ void GameTitleScene::Draw(){
 	}
 	RTSprite_->Draw(RTTransform_, uv, color, breakth);
 	pressSprite_->Draw(pressTransform_, uv, color, pressTextureHandle_);
-
+	titleSprite_->Draw(titleTransform_, uv, {1.0f,1.0f,1.0f,1.0f}, titleTextureHandle_);
 	Fade::GetInstance()->Draw();
 #pragma endregion
 }
@@ -145,4 +151,6 @@ void GameTitleScene::ApplyGlobalVariables() {
 	const char* groupName = "GameTitleScene";
 	RTTransform_.translate = globalVariables->GetVector3Value(groupName, "RT");
 	pressTransform_.translate = globalVariables->GetVector3Value(groupName, "press");
+	titleTransform_.translate = globalVariables->GetVector3Value(groupName, "title");
+
 }
