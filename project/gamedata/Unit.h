@@ -7,6 +7,7 @@
 #include "components/audio/Audio.h"
 #include "components/2d/CreateSprite.h"
 #include <memory>
+#include "explosion/explosion3.h"
 
 class Unit {
 public:
@@ -94,4 +95,6 @@ private:
 
 	VectorInt2 timerPosotion_;
 	VectorInt2 timerOffset_;
+
+	Explosion3* explosion_;
 };
