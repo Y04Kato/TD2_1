@@ -1,7 +1,6 @@
 #include "explosion3.h"
 
 void Explosion3::Initialize() {
-	input_ = Input::GetInstance();
 	for (int i = 0; i < Max; i++) {
 		model_[i] = Model::CreateModelFromObj("project/gamedata/resources/block", "block.obj");
 		worldTransform_[i].Initialize();

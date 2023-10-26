@@ -42,8 +42,6 @@ void Unit::Initialize() {
 
 	material = { 1.0f,0.0f,0.0f,1.0f };
 
-	explosion_->Initialize();
-
 	//ライト
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{-0.2f,-1.5f,0.4f},1.0f };
 
@@ -160,7 +158,6 @@ void Unit::Update() {
 		}
 	}
 
-	explosion_->Update(worldTransform_);
 	worldTransform_.UpdateMatrix();
 
 #ifdef _DEBUG
@@ -225,7 +222,6 @@ void Unit::Move() {
 void Unit::Create()
 {
 	audio_->SoundPlayWave(soundData1_, 1.0f, false);
-	explosion_->ExplosionFlagTrue();
 	MapManager::GetInstance()->CreateBlock(target_, direction_);
 	phase_ = Phase::Next;
 }
@@ -233,7 +229,6 @@ void Unit::Create()
 void Unit::Draw(const ViewProjection& viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection, material, directionalLight_);
-	explosion_->Draw(viewProjection);
 }
 
 void Unit::ApplyGlobalVariables() {

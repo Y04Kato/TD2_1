@@ -95,6 +95,4 @@ private:
 
 	VectorInt2 timerPosotion_;
 	VectorInt2 timerOffset_;
-
-	Explosion3* explosion_;
 };
