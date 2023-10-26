@@ -170,8 +170,8 @@ void GamePlayScene::Initialize() {
 
 	slideTextureHandle_[0] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide1.png");
 	slideTextureHandle_[1] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide2.png");
-	slideTextureHandle_[2] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide3.png");
-	slideTextureHandle_[3] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide4.png");
+	slideTextureHandle_[2] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide4.png");
+	slideTextureHandle_[3] = TextureManager::GetInstance()->Load("project/gamedata/resources/slide3.png");
 }
 
 void GamePlayScene::Update() {
