@@ -53,7 +53,7 @@ void Player::ShortInitialize() {
 void Player::Update() {
 	XINPUT_STATE joyState;
 	Input::GetInstance()->GetJoystickState(0, joyState);
-
+	worldTransformCursor_.translation_.num[1] = -1.0f;
 	explosion_->Update(worldTransformBreak_);
 
 	if (isExplosion_ == true) {
@@ -251,9 +251,7 @@ void Player::Break() {
 		}
 		MapManager::GetInstance()->BreakBlock(mapPosition_);	
 	}
-	if (frameCount_ == breakEnd) {
-		phase_ = Phase::Idle;
-	}
+	
 	float t = (float(frameCount_) / float(breakEnd) -0.5f) * 2.0f;
 	if (isBreakBlock_) {
 		worldTransformUp_.translation_.num[1] = -2.0f + 3.0f*(t * t);
@@ -262,9 +260,15 @@ void Player::Break() {
 
 		worldTransformCursor_.scale_.num[0] = 1.5f + -(t * t*0.5f);
 		worldTransformCursor_.scale_.num[2] = 1.5f + -(t * t*0.5f);
+
+		//worldTransformUp_.rotation_.num[1] += 1.5f;
 	}
 	else {
 		worldTransformUp_.translation_.num[1] = 0.5f + (t * t*0.5f);
+	}
+	if (frameCount_ == breakEnd) {
+		phase_ = Phase::Idle;
+		worldTransformUp_.rotation_.num[1] = 0.0f;
 	}
 	frameCount_++;
 }
