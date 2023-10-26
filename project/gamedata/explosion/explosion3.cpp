@@ -7,7 +7,7 @@ void Explosion3::Initialize() {
 		worldTransform_[i].Initialize();
 		worldTransform_[i].scale_ = { 0.2f,0.2f,0.2f };
 	}
-	modelMaterial_ = { 1.0f,1.0f,1.0f,1.0f };
+	modelMaterial_ = { 1.0f,0.0f,0.0f,1.0f };
 
 	directionalLight_ = { {1.0f,1.0f,1.0f,1.0f},{0.0f,-1.0f,0.0f},1.0f };
 
